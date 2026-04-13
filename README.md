@@ -1,140 +1,86 @@
-# F1 Betting Odds Scraper
+# 🏎️ Identifying Value Bets in Formula 1
+### DSA 210 – Introduction to Data Science | Spring 2026
 
-A robust Selenium-based web scraper for extracting historical betting odds from Formula1.com articles for your DSA 210 project.
+---
 
-## Setup
+## 📌 Project Overview
 
-### 1. Install Dependencies
+This project demonstrates the power of mathematical modeling in Formula 1 betting by building a machine learning system to predict race winners and podium finishers. By comparing model-derived **"Fair Value"** probabilities against market-implied probabilities from official F1 pre-race betting articles, the project identifies market inefficiencies and **Expected Value (EV)** betting opportunities.
 
-```bash
-pip install -r requirements.txt
-```
+The core hypothesis is that pre-race car telemetry data — collected from Friday Practice and Qualifying sessions — contains measurable signals that are systematically undervalued or overvalued by the betting market.
 
-### 2. What You Get
+---
 
-- **Selenium**: Handles Cloudflare blocking with a live browser
-- **webdriver_manager**: Automatically manages ChromeDriver
-- **BeautifulSoup**: Parses the rendered HTML to extract odds
-- **Pandas**: Structures data and exports to CSV
+## 🎯 Objectives
 
-## How It Works
+- Use FastF1 telemetry data (qualifying lap times, top speeds, sector times) to build race outcome predictions
+- Scrape and calibrate historical betting odds from official F1 betting articles
+- Apply **Logistic Regression** and **Random Forest** classification models trained on 2022–2024 data and tested on 2025
+- Simulate an **Expected Value (EV) betting strategy** by comparing model probabilities with market-implied probabilities
 
-1. **Selenium opens Chrome** and navigates to each Formula1.com article URL
-2. **Waits 10 seconds** per page (solve any "I am not a robot" CAPTCHA during this time)
-3. **BeautifulSoup extracts** all `<p>` and `<li>` tags from the rendered page
-4. **Regex pattern matching** identifies driver names and decimal odds
-5. **Handles common formats**: 
-   - Single drivers: _"Hamilton 2.50"_
-   - Multiple drivers: _"Verstappen, Russell, Norris 45.0"_  
-   - Various bullet symbols: _•, ●_
-6. **Exports to CSV**: `F1_Master_Odds.csv` with columns: Year, Race, Bet_Type, Driver, Decimal_Odds
+---
 
-## Usage
+## 🗂️ Data Sources
 
-### Step 1: Add Your URLs
+### 1. Probabilistic (Betting Odds) Data
+- **Source:** Official Formula 1 Betting Articles (published before each race weekend)
+- **Method:** Web scraping with `BeautifulSoup` and `Selenium`
+- **Coverage:** 2022–2025 seasons
+- **Manual Enrichment:** Missing or corrupted data points were verified and corrected by hand to ensure data integrity, eliminating scraping artifacts
 
-Edit `odds_scraper.py` and replace the `raw_urls` dictionary:
+### 2. Car Telemetry Data
+- **Source:** [`FastF1`](https://theoehrly.github.io/Fast-F1/) Python library
+- **Sessions used:** Friday Practice & Qualifying
+- **Key features:** Lap times, sector times, top speeds, compound used, gap to pole
+- **Coverage:** 2022–2025 seasons
 
-```python
-raw_urls = {
-    2022: [
-        "https://www.formula1.com/en/latest/article/...",  # Replace with actual URLs
-        "https://www.formula1.com/en/latest/article/...",
-    ],
-    2023: [
-        # Add 2023 URLs here
-    ]
-}
-```
+---
 
-### Step 2: Run the Script
+## 🔬 Methodology
 
-```bash
-python odds_scraper.py
-```
+### Probability Calibration (Overround Removal)
+Raw betting odds contain a built-in bookmaker margin (overround). To extract true market-implied probabilities, the **Power Method** is applied:
 
-### Step 3: Solve CAPTCHAs
+1. **Convert odds to raw probabilities:**  
+   $P_{raw} = \dfrac{1}{\text{Decimal Odds}}$
 
-When the script runs:
-- Chrome will open automatically
-- When you see the Cloudflare "Just a moment" screen, you have **10 seconds** to solve the CAPTCHA
-- After 10 seconds, the script continues automatically (page will be fully loaded)
+2. **Calculate overround:**  
+   $\text{Overround} = \sum P_{raw}$ (typically 1.05–1.15 per race)
 
-### Sample Output
+3. **Power scaling — solve for exponent $k$:**  
+   $\sum \left(P_{raw}\right)^k = 1$
 
-```
-Scraping: 2022 Bahrain Grand Prix...
-   -> Loading URL: https://www.formula1.com/...
-   -> Waiting 10 seconds... (solve CAPTCHA if prompted)
-   -> Page Title: Betting Odds for the Bahrain Grand Prix...
-   -> ✓ Success: Extracted 28 odds entries
-   
-...
+This yields calibrated "True Probabilities" for each driver per race.
 
-✓ SUCCESS: Exported 142 odds to 'F1_Master_Odds.csv'
-  Columns: Year, Race, Bet_Type, Driver, Decimal_Odds
+### Machine Learning Models
+| Model | Purpose |
+|---|---|
+| Logistic Regression | Baseline probabilistic classification |
+| Random Forest | Non-linear feature interaction & feature importance |
 
-Sample rows:
-   Year               Race Bet_Type       Driver Decimal_Odds
-0  2022  Bahrain Grand Prix      Win  Verstappen          2.50
-1  2022  Bahrain Grand Prix      Win    Hamilton          5.00
-2  2022  Bahrain Grand Prix   Podium      Sainz         12.50
-```
+- **Train set:** 2022–2024 seasons  
+- **Test set:** 2025 season  
+- **Targets:** Race Winner (binary), Top-3 Podium Finish (binary)
 
-## Features
+### Expected Value Simulation
+Model-predicted probabilities are compared against calibrated market probabilities to flag positive EV opportunities:
 
-✅ **Cloudflare-resistant**: Uses live browser rendering  
-✅ **Manual CAPTCHA handling**: 10-second window for solving  
-✅ **Robust driver detection**: 40+ historical F1 drivers  
-✅ **Multi-driver parsing**: Handles 1+ drivers per line  
-✅ **Race name extraction**: Automatically from URL  
-✅ **Duplicate removal**: Cleans extracted data  
-✅ **CSV export**: Structured format for analysis  
+$$EV = (P_{model} \times \text{Decimal Odds}) - 1$$
 
-## Troubleshooting
+A bet is flagged as a **value bet** when $EV > 0$.
 
-### "Just a moment" page persists
-- **Cause**: CAPTCHA wasn't solved in time  
-- **Solution**: Increase the wait time in `scrape_targeted_odds()` (change `time.sleep(10)` to a higher value like 20)
+---
 
-### No odds extracted
-- **Cause**: HTML structure differs from expected  
-- **Solution**: Check BeautifulSoup is finding `<p>` and `<li>` tags. Add debugging:
-  ```python
-  print(soup.prettify()[:2000])  # Print first 2000 chars of HTML
-  ```
+## 📊 Hypothesis Testing
 
-### Chrome doesn't open
-- **Cause**: ChromeDriver not installed correctly  
-- **Solution**: webdriver_manager should handle this automatically, but try:
-  ```bash
-  pip install --upgrade webdriver-manager
-  ```
+### Test 1 — Does Qualifying in the Top 3 Statistically Matter?
+> **H₀:** Qualifying in the Top 3 has no effect on win probability  
+> **Result:** Rejected — Qualifying in the Top 3 gives a statistically massive advantage in win probability  
+> **T-Statistic:** 10.06 | **P-Value:** 9.76221e-20
 
-### Memory issues
-- **Cause**: Keeping browser open for many URLs  
-- **Solution**: Script reuses a single driver, but if needed, adjust headless mode in `init_selenium_driver()`:
-  ```python
-  options.add_argument("--headless")  # Run browser in background
-  ```
+### Test 2 — Does Straight-Line Speed Dictate Podium Probability?
+> **H₀:** Top speed has no effect on podium probability  
+> **Result:** Rejected — Top speed is a statistically significant indicator of podium probability  
+> **Mann-Whitney U-Statistic:** 147428.00 | **P-Value:** 1.70940e-02
 
-## Data Schema
-
-**F1_Master_Odds.csv** contains:
-
-| Column | Example | Description |
-|--------|---------|-------------|
-| Year | 2022 | Race year |
-| Race | Bahrain Grand Prix | Race name |
-| Bet_Type | Win or Podium | Type of betting odds |
-| Driver | Verstappen | Driver name |
-| Decimal_Odds | 2.50 | Decimal odds format |
-
-## Notes for DSA 210
-
-- This script respects Formula1.com's terms of service (uses realistic browser behavior)
-- Data is for educational use in your university project
-- Adjust `KNOWN_DRIVERS` list if you find drivers not being recognized
-- Consider adding date headers if Formula1.com changes article timestamps
-
-Good luck with your project! 🏎️
+---
