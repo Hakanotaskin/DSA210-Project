@@ -10,7 +10,6 @@ df = pd.read_csv('F1_Master_Merged_Data.csv')
 
 print("\n--- Generating EDA Plots ---")
 
-
 plt.figure(figsize=(10, 8))
 
 numeric_cols = ['race_win_prob', 'podium_prob', 'Grid_Position', 'Quali_Time_Delta', 'Top_Speed_ST']
@@ -19,7 +18,6 @@ plt.title("Correlation: Car Physics vs. True Probabilities")
 plt.tight_layout()
 plt.savefig('Correlation_Heatmap.png')
 print("Saved Correlation_Heatmap.png")
-
 
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=df, x='Grid_Position', y='race_win_prob', alpha=0.6, color='blue')
