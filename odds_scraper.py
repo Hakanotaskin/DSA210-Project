@@ -20,7 +20,6 @@ driver.execute_cdp_cmd('Network.setUserAgentOverride', {
     "userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 })
 
-
 DRIVER_NAME_MAP: dict[str, str] = {
     "max verstappen": "VER", "verstappen": "VER",
     "sergio perez": "PER", "perez": "PER", "checo perez": "PER",
