@@ -1,9 +1,9 @@
-# 🏎️ Identifying Value Bets in Formula 1
+#  Identifying Value Bets in Formula 1
 ### DSA 210 – Introduction to Data Science | Spring 2026
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 This project demonstrates the power of mathematical modeling in Formula 1 betting by building a machine learning system to predict race winners and podium finishers. By comparing model-derived **"Fair Value"** probabilities against market-implied probabilities from official F1 pre-race betting articles, the project identifies market inefficiencies and **Expected Value (EV)** betting opportunities.
 
@@ -11,16 +11,16 @@ The core hypothesis is that pre-race car telemetry data — collected from Frida
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
-- Use FastF1 telemetry data (qualifying lap times, top speeds, sector times) to build race outcome predictions
-- Scrape and calibrate historical betting odds from official F1 betting articles
-- Apply **Logistic Regression** and **Random Forest** classification models trained on 2022–2024 data and tested on 2025
-- Simulate an **Expected Value (EV) betting strategy** by comparing model probabilities with market-implied probabilities
+- FastF1 telemetry data is used (qualifying lap times, top speeds, sector times) to build race outcome predictions
+- Historical betting odds are scraped and calibrated from official F1 betting articles
+- **Logistic Regression** and **Random Forest** classification models trained on 2022–2024 data and tested on 2025
+- **Expected Value (EV) betting strategy** is simulated by comparing model probabilities with market-implied probabilities
 
 ---
 
-## 🗂️ Data Sources
+##  Data Sources
 
 ### 1. Probabilistic (Betting Odds) Data
 - **Source:** Official Formula 1 Betting Articles (published before each race weekend)
@@ -36,7 +36,7 @@ The core hypothesis is that pre-race car telemetry data — collected from Frida
 
 ---
 
-## 🔬 Methodology
+##  Methodology
 
 ### Probability Calibration (Overround Removal)
 Raw betting odds contain a built-in bookmaker margin (overround). To extract true market-implied probabilities, the **Power Method** is applied:
@@ -71,7 +71,7 @@ A bet is flagged as a **value bet** when $EV > 0$.
 
 ---
 
-## 📊 Hypothesis Testing
+##  Hypothesis Testing
 
 ### Test 1 — Does Qualifying in the Top 3 Statistically Matter?
 > **H₀:** Qualifying in the Top 3 has no effect on win probability  
