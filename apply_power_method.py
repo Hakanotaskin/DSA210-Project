@@ -5,53 +5,52 @@ from scipy.optimize import minimize
 print("Loading F1_Master_Odds_Final.csv...")
 df = pd.read_csv('F1_Master_Odds_Final.csv')
 
-# Safely get raw implied probabilities (ignoring 0s to prevent math errors)
+
 df['raw_win'] = df['race_win_odds'].apply(lambda x: 1/x if x > 0 else 0)
 df['raw_podium'] = df['podium_odds'].apply(lambda x: 1/x if x > 0 else 0)
 
-# The Power Method optimizer
+
 def find_optimal_k(implied_probs, target_sum):
-    probs = implied_probs[implied_probs > 0] # Only look at valid odds
+    probs = implied_probs[implied_probs > 0] 
     if len(probs) == 0: return 1.0
     
     def objective(k):
         return (np.sum(probs ** k) - target_sum) ** 2
         
-    # Scipy finds the perfect exponent
+
     res = minimize(objective, 1.0, bounds=[(0.5, 3.0)])
     return res.x[0]
 
 print("Calculating True Probabilities for all races...")
 processed_races = []
 
-# Group by each specific race weekend to do the math locally
+
 for (year, race), group in df.groupby(['year', 'race']):
     race_df = group.copy()
-    
-    # 1. Fix the Race Win Odds (Target sum = 1.0)
+
     win_k = find_optimal_k(race_df['raw_win'], 1.0)
     race_df['true_win_prob'] = race_df['raw_win'].apply(lambda x: (x ** win_k) if x > 0 else 0)
     
-    # 2. Fix the Podium Odds (Target sum = 3.0)
+
     podium_k = find_optimal_k(race_df['raw_podium'], 3.0)
     race_df['true_podium_prob'] = race_df['raw_podium'].apply(lambda x: (x ** podium_k) if x > 0 else 0)
     
     processed_races.append(race_df)
 
-# Combine all the fixed races back together
+
 final_df = pd.concat(processed_races)
 
-# Clean up temporary columns and format nicely for Machine Learning
+
 final_df = final_df.drop(columns=['raw_win', 'raw_podium'])
 final_df['true_win_prob'] = final_df['true_win_prob'].round(4)
 final_df['true_podium_prob'] = final_df['true_podium_prob'].round(4)
 
-# Overwrite the old flawed probability columns with the true ones
+
 final_df['race_win_prob'] = final_df['true_win_prob']
 final_df['podium_prob'] = final_df['true_podium_prob']
 final_df = final_df.drop(columns=['true_win_prob', 'true_podium_prob'])
 
-# Save the final file
+
 output_file = 'F1_Master_Odds_ML_Ready.csv'
 final_df.to_csv(output_file, index=False)
 
