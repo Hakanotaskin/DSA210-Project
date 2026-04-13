@@ -3,7 +3,7 @@ import re
 import pandas as pd
 from bs4 import BeautifulSoup
 
-# --- SELENIUM IMPORTS ---
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -20,7 +20,6 @@ driver.execute_cdp_cmd('Network.setUserAgentOverride', {
     "userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 })
 
-# ── Driver name normalisation (For FastF1 Merge later!) ──────────────────────
 DRIVER_NAME_MAP: dict[str, str] = {
     "max verstappen": "VER", "verstappen": "VER",
     "sergio perez": "PER", "perez": "PER", "checo perez": "PER",
@@ -50,7 +49,7 @@ DRIVER_NAME_MAP: dict[str, str] = {
     "franco colapinto": "COL", "colapinto": "COL",
 }
 
-# ── Math Conversion ────────────────────────────────────────────────────────────
+
 def fractional_to_implied_prob(text: str | None) -> float | None:
     if not text: return None
     upper = text.strip().upper()
@@ -67,7 +66,7 @@ def fractional_to_implied_prob(text: str | None) -> float | None:
     except ValueError:
         return None
 
-# ── The Upgraded Text Parser ───────────────────────────────────────────────────
+
 def parse_article_odds(html: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup.find_all(["nav", "footer", "script", "style", "aside", "header"]): 
@@ -144,7 +143,7 @@ def extract_race_name(url):
 # ── Main Execution ─────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     
-    # The Complete 2022-2025 Master List
+
     raw_urls = {
         2022: [
             "https://www.formula1.com/en/latest/article/betting-odds-for-the-bahrain-grand-prix-whos-favourite-to-win-the-first-race.24H3iX8BNvsPuCo0vY3ZoP",
@@ -254,7 +253,7 @@ if __name__ == "__main__":
                 print(f"Scraping {year} {race_name}...")
                 
                 driver.get(url)
-                time.sleep(3.5) # Allow full JavaScript load
+                time.sleep(3.5) 
                 
                 if "Just a moment" in driver.title:
                     print("🚨 Cloudflare caught us! You have 15 seconds to click the human box...")
@@ -277,7 +276,7 @@ if __name__ == "__main__":
         if all_data:
             df = pd.DataFrame(all_data)
             
-            # Reorder columns
+   
             cols = ["year", "race", "driver_code", "race_win_odds", "race_win_prob", "podium_odds", "podium_prob"]
             df = df[[c for c in cols if c in df.columns]]
             
