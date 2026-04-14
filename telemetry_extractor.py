@@ -3,26 +3,17 @@ import fastf1
 import numpy as np
 import os
 
-# 1. Enable caching
 if not os.path.exists('fastf1_cache'):
     os.makedirs('fastf1_cache')
 fastf1.Cache.enable_cache('fastf1_cache')
-
-# 2. Load your flawless financial data
 print("Loading financial data...")
 df = pd.read_csv('F1_Master_Merged_Data.csv')
-
-# Create empty columns for our new physical features
 df['Grid_Position'] = np.nan
 df['Quali_Time_Delta'] = np.nan
 df['Top_Speed_ST'] = np.nan
-
-# 3. Get a unique list of races to download
 races_to_fetch = df[['year', 'race']].drop_duplicates()
 total_races = len(races_to_fetch)
 print(f"Found {total_races} races to process. Beginning extraction...\n")
-
-# 4. The Extraction Loop
 for index, row in races_to_fetch.iterrows():
     year = row['year']
     race_name = row['race']
@@ -56,8 +47,6 @@ for index, row in races_to_fetch.iterrows():
                     
     except Exception as e:
         print(f"  [!] Could not load telemetry for {year} {race_name}. Error: {e}")
-
-# 5. Save the final merged dataset
 output_filename = 'F1_Master_Merged_Data.csv'
 df.to_csv(output_filename, index=False)
 print(f"\nSUCCESS! Data extraction complete. Saved as {output_filename}")
