@@ -1,0 +1,480 @@
+﻿Yaris,Pilot,Grid_Position,Quali_Time_Delta,Top_Speed_ST
+Australian Grand Prix,Lando Norris,1.0,0.0,328.0
+Australian Grand Prix,Max Verstappen,3.0,0.385,331.0
+Australian Grand Prix,George Russell,4.0,0.45,328.0
+Australian Grand Prix,Andrea Kimi Antonelli,16.0,1.429,325.0
+Australian Grand Prix,Alexander Albon,6.0,0.641,331.0
+Australian Grand Prix,Lance Stroll,13.0,1.273,329.0
+Australian Grand Prix,Nico Hulkenberg,17.0,1.483,328.0
+Australian Grand Prix,Charles Leclerc,7.0,0.659,331.0
+Australian Grand Prix,Oscar Piastri,2.0,0.084,329.0
+Australian Grand Prix,Lewis Hamilton,8.0,0.823,330.0
+Australian Grand Prix,Pierre Gasly,9.0,0.884,329.0
+Australian Grand Prix,Yuki Tsunoda,5.0,0.574,330.0
+Australian Grand Prix,Esteban Ocon,19.0,2.051,322.0
+Australian Grand Prix,Oliver Bearman,20.0,,156.0
+Australian Grand Prix,Liam Lawson,18.0,1.998,332.0
+Australian Grand Prix,Gabriel Bortoleto,15.0,1.42,326.0
+Australian Grand Prix,Fernando Alonso,12.0,1.192,330.0
+Australian Grand Prix,Carlos Sainz,10.0,0.835,327.0
+Australian Grand Prix,Jack Doohan,14.0,1.219,327.0
+Australian Grand Prix,Isack Hadjar,11.0,1.079,329.0
+Chinese Grand Prix,Oscar Piastri,1.0,0.0,330.0
+Chinese Grand Prix,Lando Norris,3.0,0.146,332.0
+Chinese Grand Prix,George Russell,2.0,0.082,338.0
+Chinese Grand Prix,Max Verstappen,4.0,0.176,339.0
+Chinese Grand Prix,Esteban Ocon,11.0,0.984,327.0
+Chinese Grand Prix,Kimi Antonelli,8.0,0.462,333.0
+Chinese Grand Prix,Alexander Albon,10.0,0.862,332.0
+Chinese Grand Prix,Oliver Bearman,17.0,1.377,329.0
+Chinese Grand Prix,Lance Stroll,14.0,1.132,333.0
+Chinese Grand Prix,Carlos Sainz,15.0,0.987,333.0
+Chinese Grand Prix,Isack Hadjar,7.0,0.438,332.0
+Chinese Grand Prix,Liam Lawson,20.0,1.533,334.0
+Chinese Grand Prix,Jack Doohan,18.0,1.451,331.0
+Chinese Grand Prix,Gabriel Bortoleto,19.0,1.5,333.0
+Chinese Grand Prix,Nico Hulkenberg,12.0,0.991,335.0
+Chinese Grand Prix,Yuki Tsunoda,9.0,0.597,333.0
+Chinese Grand Prix,Fernando Alonso,13.0,1.047,330.0
+Chinese Grand Prix,Charles Leclerc,6.0,0.38,335.0
+Chinese Grand Prix,Lewis Hamilton,5.0,0.286,333.0
+Chinese Grand Prix,Pierre Gasly,16.0,1.351,331.0
+Japanese Grand Prix,Max Verstappen,1.0,0.0,299.0
+Japanese Grand Prix,Lando Norris,2.0,0.012,299.0
+Japanese Grand Prix,Oscar Piastri,3.0,0.044,297.0
+Japanese Grand Prix,Charles Leclerc,4.0,0.316,298.0
+Japanese Grand Prix,George Russell,5.0,0.335,298.0
+Japanese Grand Prix,Kimi Antonelli,6.0,0.572,297.0
+Japanese Grand Prix,Lewis Hamilton,8.0,0.627,298.0
+Japanese Grand Prix,Isack Hadjar,7.0,0.586,297.0
+Japanese Grand Prix,Alexander Albon,9.0,0.632,297.0
+Japanese Grand Prix,Oliver Bearman,10.0,0.728,297.0
+Japanese Grand Prix,Fernando Alonso,12.0,0.914,296.0
+Japanese Grand Prix,Yuki Tsunoda,14.0,0.984,296.0
+Japanese Grand Prix,Pierre Gasly,11.0,0.839,299.0
+Japanese Grand Prix,Carlos Sainz,15.0,0.853,298.0
+Japanese Grand Prix,Jack Doohan,19.0,1.894,299.0
+Japanese Grand Prix,Nico Hulkenberg,16.0,1.587,297.0
+Japanese Grand Prix,Liam Lawson,13.0,0.923,298.0
+Japanese Grand Prix,Esteban Ocon,18.0,1.713,296.0
+Japanese Grand Prix,Gabriel Bortoleto,17.0,1.639,293.0
+Japanese Grand Prix,Lance Stroll,20.0,2.288,295.0
+Bahrain Grand Prix,Oscar Piastri,1.0,0.0,316.0
+Bahrain Grand Prix,George Russell,3.0,0.168,318.0
+Bahrain Grand Prix,Lando Norris,6.0,0.426,317.0
+Bahrain Grand Prix,Charles Leclerc,2.0,0.334,327.0
+Bahrain Grand Prix,Lewis Hamilton,9.0,0.931,322.0
+Bahrain Grand Prix,Max Verstappen,7.0,0.582,320.0
+Bahrain Grand Prix,Pierre Gasly,4.0,0.375,319.0
+Bahrain Grand Prix,Esteban Ocon,14.0,1.753,318.0
+Bahrain Grand Prix,Yuki Tsunoda,10.0,1.387,315.0
+Bahrain Grand Prix,Oliver Bearman,20.0,2.532,313.0
+Bahrain Grand Prix,Kimi Antonelli,5.0,0.372,317.0
+Bahrain Grand Prix,Alexander Albon,15.0,2.199,323.0
+Bahrain Grand Prix,Isack Hadjar,12.0,1.43,321.0
+Bahrain Grand Prix,Jack Doohan,11.0,1.404,319.0
+Bahrain Grand Prix,Fernando Alonso,13.0,1.793,320.0
+Bahrain Grand Prix,Liam Lawson,17.0,2.324,317.0
+Bahrain Grand Prix,Lance Stroll,19.0,2.442,317.0
+Bahrain Grand Prix,Gabriel Bortoleto,18.0,2.345,319.0
+Bahrain Grand Prix,Carlos Sainz,8.0,0.839,316.0
+Bahrain Grand Prix,Nico Hulkenberg,16.0,2.157,325.0
+Saudi Arabian Grand Prix,Oscar Piastri,2.0,0.01,333.0
+Saudi Arabian Grand Prix,Max Verstappen,1.0,0.0,338.0
+Saudi Arabian Grand Prix,Charles Leclerc,4.0,0.376,336.0
+Saudi Arabian Grand Prix,Lando Norris,10.0,0.187,334.0
+Saudi Arabian Grand Prix,George Russell,3.0,0.113,334.0
+Saudi Arabian Grand Prix,Kimi Antonelli,5.0,0.504,333.0
+Saudi Arabian Grand Prix,Lewis Hamilton,7.0,0.808,336.0
+Saudi Arabian Grand Prix,Carlos Sainz,6.0,0.73,335.0
+Saudi Arabian Grand Prix,Alexander Albon,11.0,0.815,334.0
+Saudi Arabian Grand Prix,Isack Hadjar,14.0,1.124,334.0
+Saudi Arabian Grand Prix,Fernando Alonso,13.0,1.009,332.0
+Saudi Arabian Grand Prix,Liam Lawson,12.0,0.897,331.0
+Saudi Arabian Grand Prix,Oliver Bearman,15.0,1.242,333.0
+Saudi Arabian Grand Prix,Esteban Ocon,19.0,1.798,333.0
+Saudi Arabian Grand Prix,Nico Hulkenberg,18.0,1.488,339.0
+Saudi Arabian Grand Prix,Lance Stroll,16.0,1.351,334.0
+Saudi Arabian Grand Prix,Jack Doohan,17.0,1.445,336.0
+Saudi Arabian Grand Prix,Gabriel Bortoleto,20.0,2.168,336.0
+Saudi Arabian Grand Prix,Yuki Tsunoda,8.0,0.696,336.0
+Saudi Arabian Grand Prix,Pierre Gasly,9.0,0.731,337.0
+Miami Grand Prix,Oscar Piastri,4.0,0.065,336.0
+Miami Grand Prix,Lando Norris,2.0,0.065,338.0
+Miami Grand Prix,George Russell,5.0,0.181,338.0
+Miami Grand Prix,Max Verstappen,1.0,0.0,341.0
+Miami Grand Prix,Alexander Albon,7.0,0.478,339.0
+Miami Grand Prix,Kimi Antonelli,3.0,0.067,340.0
+Miami Grand Prix,Charles Leclerc,8.0,0.55,343.0
+Miami Grand Prix,Lewis Hamilton,12.0,0.802,341.0
+Miami Grand Prix,Carlos Sainz,6.0,0.365,341.0
+Miami Grand Prix,Yuki Tsunoda,10.0,0.739,339.0
+Miami Grand Prix,Isack Hadjar,11.0,0.783,338.0
+Miami Grand Prix,Esteban Ocon,9.0,0.62,338.0
+Miami Grand Prix,Pierre Gasly,20.0,1.506,337.0
+Miami Grand Prix,Nico Hulkenberg,16.0,1.269,341.0
+Miami Grand Prix,Fernando Alonso,17.0,1.4,337.0
+Miami Grand Prix,Lance Stroll,18.0,1.626,340.0
+Miami Grand Prix,Liam Lawson,15.0,1.159,338.0
+Miami Grand Prix,Gabriel Bortoleto,13.0,0.947,341.0
+Miami Grand Prix,Oliver Bearman,19.0,1.795,336.0
+Miami Grand Prix,Jack Doohan,14.0,0.982,337.0
+Emilia Romagna Grand Prix,Max Verstappen,2.0,0.034,301.0
+Emilia Romagna Grand Prix,Lando Norris,4.0,0.292,301.0
+Emilia Romagna Grand Prix,Oscar Piastri,1.0,0.0,300.0
+Emilia Romagna Grand Prix,Lewis Hamilton,12.0,1.095,301.0
+Emilia Romagna Grand Prix,Alexander Albon,7.0,0.803,298.0
+Emilia Romagna Grand Prix,Charles Leclerc,11.0,0.934,302.0
+Emilia Romagna Grand Prix,George Russell,3.0,0.137,302.0
+Emilia Romagna Grand Prix,Carlos Sainz,6.0,0.528,299.0
+Emilia Romagna Grand Prix,Isack Hadjar,9.0,0.84,300.0
+Emilia Romagna Grand Prix,Yuki Tsunoda,20.0,,258.0
+Emilia Romagna Grand Prix,Fernando Alonso,5.0,0.761,299.0
+Emilia Romagna Grand Prix,Nico Hulkenberg,17.0,1.848,299.0
+Emilia Romagna Grand Prix,Pierre Gasly,10.0,0.835,302.0
+Emilia Romagna Grand Prix,Liam Lawson,15.0,1.709,298.0
+Emilia Romagna Grand Prix,Lance Stroll,8.0,0.827,299.0
+Emilia Romagna Grand Prix,Franco Colapinto,16.0,1.586,303.0
+Emilia Romagna Grand Prix,Oliver Bearman,19.0,1.407,301.0
+Emilia Romagna Grand Prix,Gabriel Bortoleto,14.0,1.59,300.0
+Emilia Romagna Grand Prix,Kimi Antonelli,13.0,1.102,298.0
+Emilia Romagna Grand Prix,Esteban Ocon,18.0,1.943,300.0
+Monaco Grand Prix,Lando Norris,1.0,0.0,280.0
+Monaco Grand Prix,Charles Leclerc,2.0,0.109,282.0
+Monaco Grand Prix,Oscar Piastri,3.0,0.175,281.0
+Monaco Grand Prix,Max Verstappen,4.0,0.715,280.0
+Monaco Grand Prix,Lewis Hamilton,7.0,0.428,282.0
+Monaco Grand Prix,Isack Hadjar,5.0,0.969,281.0
+Monaco Grand Prix,Esteban Ocon,8.0,0.988,282.0
+Monaco Grand Prix,Liam Lawson,9.0,1.175,281.0
+Monaco Grand Prix,Alexander Albon,10.0,0.778,282.0
+Monaco Grand Prix,Carlos Sainz,11.0,1.408,280.0
+Monaco Grand Prix,George Russell,14.0,1.553,282.0
+Monaco Grand Prix,Oliver Bearman,20.0,2.025,281.0
+Monaco Grand Prix,Franco Colapinto,18.0,2.643,279.0
+Monaco Grand Prix,Gabriel Bortoleto,16.0,1.948,280.0
+Monaco Grand Prix,Lance Stroll,19.0,2.609,281.0
+Monaco Grand Prix,Nico Hulkenberg,13.0,1.642,282.0
+Monaco Grand Prix,Yuki Tsunoda,12.0,1.461,280.0
+Monaco Grand Prix,Kimi Antonelli,15.0,1.926,281.0
+Monaco Grand Prix,Fernando Alonso,6.0,0.97,281.0
+Monaco Grand Prix,Pierre Gasly,17.0,2.04,281.0
+Spanish Grand Prix,Oscar Piastri,1.0,0.0,329.0
+Spanish Grand Prix,Lando Norris,2.0,0.209,326.0
+Spanish Grand Prix,Charles Leclerc,7.0,0.585,327.0
+Spanish Grand Prix,George Russell,4.0,0.302,330.0
+Spanish Grand Prix,Nico Hulkenberg,15.0,1.644,326.0
+Spanish Grand Prix,Lewis Hamilton,5.0,0.499,326.0
+Spanish Grand Prix,Isack Hadjar,9.0,0.706,325.0
+Spanish Grand Prix,Pierre Gasly,8.0,0.653,325.0
+Spanish Grand Prix,Fernando Alonso,10.0,0.738,326.0
+Spanish Grand Prix,Max Verstappen,3.0,0.302,326.0
+Spanish Grand Prix,Liam Lawson,13.0,1.217,325.0
+Spanish Grand Prix,Gabriel Bortoleto,12.0,1.21,328.0
+Spanish Grand Prix,Yuki Tsunoda,19.0,1.839,323.0
+Spanish Grand Prix,Carlos Sainz,17.0,1.657,327.0
+Spanish Grand Prix,Franco Colapinto,18.0,1.788,326.0
+Spanish Grand Prix,Esteban Ocon,16.0,1.655,326.0
+Spanish Grand Prix,Oliver Bearman,14.0,1.528,325.0
+Spanish Grand Prix,Kimi Antonelli,6.0,0.565,327.0
+Spanish Grand Prix,Alexander Albon,11.0,1.095,327.0
+Canadian Grand Prix,George Russell,1.0,0.0,329.0
+Canadian Grand Prix,Max Verstappen,2.0,0.16,336.0
+Canadian Grand Prix,Kimi Antonelli,4.0,0.492,332.0
+Canadian Grand Prix,Oscar Piastri,3.0,0.221,331.0
+Canadian Grand Prix,Charles Leclerc,8.0,0.727,333.0
+Canadian Grand Prix,Lewis Hamilton,5.0,0.627,333.0
+Canadian Grand Prix,Fernando Alonso,6.0,0.687,333.0
+Canadian Grand Prix,Nico Hulkenberg,11.0,1.284,329.0
+Canadian Grand Prix,Esteban Ocon,14.0,1.479,328.0
+Canadian Grand Prix,Carlos Sainz,16.0,1.499,330.0
+Canadian Grand Prix,Oliver Bearman,13.0,1.407,329.0
+Canadian Grand Prix,Yuki Tsunoda,18.0,1.203,336.0
+Canadian Grand Prix,Franco Colapinto,10.0,1.243,329.0
+Canadian Grand Prix,Gabriel Bortoleto,15.0,1.486,330.0
+Canadian Grand Prix,Pierre Gasly,20.0,1.768,330.0
+Canadian Grand Prix,Isack Hadjar,12.0,0.968,330.0
+Canadian Grand Prix,Lance Stroll,17.0,1.618,333.0
+Canadian Grand Prix,Lando Norris,7.0,0.7,333.0
+Canadian Grand Prix,Liam Lawson,19.0,1.626,329.0
+Canadian Grand Prix,Alexander Albon,9.0,0.993,332.0
+Austrian Grand Prix,Lando Norris,1.0,0.0,322.0
+Austrian Grand Prix,Oscar Piastri,3.0,0.583,322.0
+Austrian Grand Prix,Charles Leclerc,2.0,0.521,321.0
+Austrian Grand Prix,Lewis Hamilton,4.0,0.611,321.0
+Austrian Grand Prix,George Russell,5.0,0.792,320.0
+Austrian Grand Prix,Liam Lawson,6.0,0.955,317.0
+Austrian Grand Prix,Fernando Alonso,11.0,1.157,320.0
+Austrian Grand Prix,Gabriel Bortoleto,8.0,0.875,319.0
+Austrian Grand Prix,Nico Hulkenberg,20.0,1.635,319.0
+Austrian Grand Prix,Esteban Ocon,17.0,1.393,319.0
+Austrian Grand Prix,Oliver Bearman,15.0,1.247,318.0
+Austrian Grand Prix,Isack Hadjar,13.0,1.092,320.0
+Austrian Grand Prix,Pierre Gasly,10.0,0.875,319.0
+Austrian Grand Prix,Lance Stroll,16.0,1.358,319.0
+Austrian Grand Prix,Franco Colapinto,14.0,1.307,318.0
+Austrian Grand Prix,Yuki Tsunoda,18.0,1.398,321.0
+Austrian Grand Prix,Alexander Albon,12.0,1.172,319.0
+Austrian Grand Prix,Max Verstappen,7.0,0.865,321.0
+Austrian Grand Prix,Kimi Antonelli,9.0,1.081,321.0
+Austrian Grand Prix,Carlos Sainz,19.0,1.611,317.0
+British Grand Prix,Lando Norris,3.0,0.118,321.0
+British Grand Prix,Oscar Piastri,2.0,0.103,319.0
+British Grand Prix,Nico Hulkenberg,19.0,1.682,320.0
+British Grand Prix,Lewis Hamilton,5.0,0.192,324.0
+British Grand Prix,Max Verstappen,1.0,0.0,328.0
+British Grand Prix,Pierre Gasly,8.0,0.819,324.0
+British Grand Prix,Lance Stroll,17.0,1.612,324.0
+British Grand Prix,Alexander Albon,13.0,0.997,322.0
+British Grand Prix,Fernando Alonso,7.0,0.701,323.0
+British Grand Prix,George Russell,4.0,0.137,322.0
+British Grand Prix,Oliver Bearman,18.0,0.579,319.0
+British Grand Prix,Carlos Sainz,9.0,0.854,325.0
+British Grand Prix,Esteban Ocon,14.0,1.058,319.0
+British Grand Prix,Charles Leclerc,6.0,0.229,322.0
+British Grand Prix,Yuki Tsunoda,11.0,0.934,326.0
+British Grand Prix,Kimi Antonelli,10.0,0.482,323.0
+British Grand Prix,Isack Hadjar,12.0,0.972,321.0
+British Grand Prix,Gabriel Bortoleto,16.0,1.554,319.0
+British Grand Prix,Liam Lawson,15.0,1.548,317.0
+British Grand Prix,Franco Colapinto,20.0,2.168,325.0
+Belgian Grand Prix,Oscar Piastri,2.0,0.064,314.0
+Belgian Grand Prix,Lando Norris,1.0,0.0,315.0
+Belgian Grand Prix,Charles Leclerc,3.0,0.338,315.0
+Belgian Grand Prix,Max Verstappen,4.0,0.341,312.0
+Belgian Grand Prix,George Russell,6.0,0.692,317.0
+Belgian Grand Prix,Alexander Albon,5.0,0.639,314.0
+Belgian Grand Prix,Lewis Hamilton,18.0,1.377,315.0
+Belgian Grand Prix,Liam Lawson,9.0,0.735,315.0
+Belgian Grand Prix,Gabriel Bortoleto,10.0,0.774,314.0
+Belgian Grand Prix,Pierre Gasly,13.0,1.071,318.0
+Belgian Grand Prix,Oliver Bearman,12.0,1.055,311.0
+Belgian Grand Prix,Nico Hulkenberg,14.0,1.145,313.0
+Belgian Grand Prix,Yuki Tsunoda,7.0,0.683,315.0
+Belgian Grand Prix,Lance Stroll,16.0,1.94,311.0
+Belgian Grand Prix,Esteban Ocon,11.0,0.963,318.0
+Belgian Grand Prix,Kimi Antonelli,19.0,1.577,316.0
+Belgian Grand Prix,Fernando Alonso,20.0,1.823,311.0
+Belgian Grand Prix,Carlos Sainz,17.0,1.129,313.0
+Belgian Grand Prix,Franco Colapinto,15.0,1.46,319.0
+Belgian Grand Prix,Isack Hadjar,8.0,0.719,314.0
+Hungarian Grand Prix,Lando Norris,3.0,0.0,310.0
+Hungarian Grand Prix,Oscar Piastri,2.0,0.051,310.0
+Hungarian Grand Prix,George Russell,4.0,0.311,314.0
+Hungarian Grand Prix,Charles Leclerc,1.0,0.482,314.0
+Hungarian Grand Prix,Fernando Alonso,5.0,0.391,312.0
+Hungarian Grand Prix,Gabriel Bortoleto,7.0,0.696,311.0
+Hungarian Grand Prix,Lance Stroll,6.0,0.239,312.0
+Hungarian Grand Prix,Liam Lawson,9.0,0.74,308.0
+Hungarian Grand Prix,Max Verstappen,8.0,0.657,310.0
+Hungarian Grand Prix,Kimi Antonelli,15.0,0.892,313.0
+Hungarian Grand Prix,Isack Hadjar,10.0,0.579,308.0
+Hungarian Grand Prix,Lewis Hamilton,12.0,0.812,311.0
+Hungarian Grand Prix,Nico Hulkenberg,18.0,1.191,313.0
+Hungarian Grand Prix,Carlos Sainz,13.0,0.762,311.0
+Hungarian Grand Prix,Alexander Albon,19.0,1.333,311.0
+Hungarian Grand Prix,Esteban Ocon,17.0,1.133,310.0
+Hungarian Grand Prix,Yuki Tsunoda,20.0,1.009,311.0
+Hungarian Grand Prix,Franco Colapinto,14.0,0.985,310.0
+Hungarian Grand Prix,Pierre Gasly,16.0,1.076,309.0
+Hungarian Grand Prix,Oliver Bearman,11.0,0.804,312.0
+Dutch Grand Prix,Oscar Piastri,1.0,0.0,329.0
+Dutch Grand Prix,Max Verstappen,3.0,0.263,331.0
+Dutch Grand Prix,Isack Hadjar,4.0,0.546,329.0
+Dutch Grand Prix,George Russell,5.0,0.593,328.0
+Dutch Grand Prix,Alexander Albon,15.0,0.99,334.0
+Dutch Grand Prix,Oliver Bearman,20.0,1.6,326.0
+Dutch Grand Prix,Lance Stroll,19.0,,330.0
+Dutch Grand Prix,Fernando Alonso,10.0,0.704,331.0
+Dutch Grand Prix,Yuki Tsunoda,12.0,0.96,332.0
+Dutch Grand Prix,Esteban Ocon,18.0,1.535,328.0
+Dutch Grand Prix,Franco Colapinto,16.0,1.442,331.0
+Dutch Grand Prix,Liam Lawson,8.0,0.721,329.0
+Dutch Grand Prix,Carlos Sainz,9.0,0.81,332.0
+Dutch Grand Prix,Nico Hulkenberg,17.0,1.533,332.0
+Dutch Grand Prix,Gabriel Bortoleto,13.0,0.96,331.0
+Dutch Grand Prix,Kimi Antonelli,11.0,0.831,327.0
+Dutch Grand Prix,Pierre Gasly,14.0,0.975,329.0
+Dutch Grand Prix,Lando Norris,2.0,0.012,328.0
+Dutch Grand Prix,Charles Leclerc,6.0,0.642,328.0
+Dutch Grand Prix,Lewis Hamilton,7.0,0.599,331.0
+Italian Grand Prix,Max Verstappen,1.0,0.0,348.0
+Italian Grand Prix,Lando Norris,2.0,0.077,345.0
+Italian Grand Prix,Oscar Piastri,3.0,0.19,345.0
+Italian Grand Prix,Charles Leclerc,4.0,0.215,350.0
+Italian Grand Prix,George Russell,5.0,0.365,348.0
+Italian Grand Prix,Lewis Hamilton,10.0,0.332,352.0
+Italian Grand Prix,Alexander Albon,14.0,0.791,345.0
+Italian Grand Prix,Gabriel Bortoleto,7.0,0.531,355.0
+Italian Grand Prix,Kimi Antonelli,6.0,0.408,347.0
+Italian Grand Prix,Isack Hadjar,19.0,1.125,350.0
+Italian Grand Prix,Carlos Sainz,13.0,0.736,349.0
+Italian Grand Prix,Oliver Bearman,11.0,0.654,349.0
+Italian Grand Prix,Yuki Tsunoda,9.0,0.641,348.0
+Italian Grand Prix,Liam Lawson,18.0,1.487,344.0
+Italian Grand Prix,Esteban Ocon,15.0,0.915,348.0
+Italian Grand Prix,Pierre Gasly,20.0,1.311,345.0
+Italian Grand Prix,Franco Colapinto,17.0,1.2,345.0
+Italian Grand Prix,Lance Stroll,16.0,1.156,346.0
+Italian Grand Prix,Fernando Alonso,8.0,0.57,349.0
+Italian Grand Prix,Nico Hulkenberg,12.0,0.706,355.0
+Azerbaijan Grand Prix,Max Verstappen,1.0,0.0,322.0
+Azerbaijan Grand Prix,George Russell,5.0,0.338,324.0
+Azerbaijan Grand Prix,Carlos Sainz,2.0,0.478,319.0
+Azerbaijan Grand Prix,Kimi Antonelli,4.0,0.347,324.0
+Azerbaijan Grand Prix,Liam Lawson,3.0,0.42,321.0
+Azerbaijan Grand Prix,Yuki Tsunoda,6.0,0.671,321.0
+Azerbaijan Grand Prix,Lando Norris,7.0,0.205,322.0
+Azerbaijan Grand Prix,Lewis Hamilton,12.0,0.704,320.0
+Azerbaijan Grand Prix,Charles Leclerc,10.0,0.341,322.0
+Azerbaijan Grand Prix,Isack Hadjar,8.0,0.53,318.0
+Azerbaijan Grand Prix,Gabriel Bortoleto,13.0,1.16,319.0
+Azerbaijan Grand Prix,Oliver Bearman,15.0,1.549,322.0
+Azerbaijan Grand Prix,Alexander Albon,19.0,2.661,319.0
+Azerbaijan Grand Prix,Esteban Ocon,20.0,1.887,319.0
+Azerbaijan Grand Prix,Fernando Alonso,11.0,0.74,324.0
+Azerbaijan Grand Prix,Nico Hulkenberg,17.0,1.799,320.0
+Azerbaijan Grand Prix,Lance Stroll,14.0,0.984,322.0
+Azerbaijan Grand Prix,Pierre Gasly,18.0,2.022,321.0
+Azerbaijan Grand Prix,Franco Colapinto,16.0,1.662,323.0
+Azerbaijan Grand Prix,Oscar Piastri,9.0,0.297,321.0
+Singapore Grand Prix,George Russell,1.0,0.0,305.0
+Singapore Grand Prix,Max Verstappen,2.0,0.182,304.0
+Singapore Grand Prix,Lando Norris,5.0,0.428,303.0
+Singapore Grand Prix,Oscar Piastri,3.0,0.366,304.0
+Singapore Grand Prix,Kimi Antonelli,4.0,0.379,305.0
+Singapore Grand Prix,Charles Leclerc,7.0,0.626,304.0
+Singapore Grand Prix,Fernando Alonso,10.0,0.797,304.0
+Singapore Grand Prix,Lewis Hamilton,6.0,0.53,304.0
+Singapore Grand Prix,Oliver Bearman,9.0,0.71,303.0
+Singapore Grand Prix,Carlos Sainz,18.0,1.077,301.0
+Singapore Grand Prix,Isack Hadjar,8.0,0.688,304.0
+Singapore Grand Prix,Yuki Tsunoda,13.0,1.195,303.0
+Singapore Grand Prix,Lance Stroll,15.0,1.791,303.0
+Singapore Grand Prix,Alexander Albon,20.0,1.044,304.0
+Singapore Grand Prix,Liam Lawson,12.0,1.162,301.0
+Singapore Grand Prix,Franco Colapinto,16.0,1.824,304.0
+Singapore Grand Prix,Gabriel Bortoleto,14.0,1.662,300.0
+Singapore Grand Prix,Esteban Ocon,17.0,1.831,302.0
+Singapore Grand Prix,Pierre Gasly,19.0,2.103,304.0
+Singapore Grand Prix,Nico Hulkenberg,11.0,0.983,301.0
+United States Grand Prix,Max Verstappen,1.0,0.0,326.0
+United States Grand Prix,Lando Norris,2.0,0.291,325.0
+United States Grand Prix,Charles Leclerc,3.0,0.297,326.0
+United States Grand Prix,Lewis Hamilton,5.0,0.402,325.0
+United States Grand Prix,Oscar Piastri,6.0,0.574,324.0
+United States Grand Prix,George Russell,4.0,0.316,327.0
+United States Grand Prix,Yuki Tsunoda,13.0,0.956,326.0
+United States Grand Prix,Nico Hulkenberg,11.0,0.824,326.0
+United States Grand Prix,Oliver Bearman,8.0,0.629,325.0
+United States Grand Prix,Fernando Alonso,10.0,0.65,328.0
+United States Grand Prix,Liam Lawson,12.0,0.85,326.0
+United States Grand Prix,Lance Stroll,19.0,2.03,323.0
+United States Grand Prix,Kimi Antonelli,7.0,0.534,329.0
+United States Grand Prix,Alexander Albon,18.0,2.18,326.0
+United States Grand Prix,Esteban Ocon,17.0,1.626,323.0
+United States Grand Prix,Isack Hadjar,20.0,,272.0
+United States Grand Prix,Franco Colapinto,15.0,1.529,325.0
+United States Grand Prix,Gabriel Bortoleto,16.0,1.615,322.0
+United States Grand Prix,Pierre Gasly,14.0,1.089,327.0
+United States Grand Prix,Carlos Sainz,9.0,0.614,327.0
+Mexico City Grand Prix,Lando Norris,1.0,0.0,349.0
+Mexico City Grand Prix,Charles Leclerc,2.0,0.262,350.0
+Mexico City Grand Prix,Max Verstappen,5.0,0.484,350.0
+Mexico City Grand Prix,Oliver Bearman,9.0,0.874,347.0
+Mexico City Grand Prix,Oscar Piastri,7.0,0.588,349.0
+Mexico City Grand Prix,Kimi Antonelli,6.0,0.532,351.0
+Mexico City Grand Prix,George Russell,4.0,0.448,351.0
+Mexico City Grand Prix,Lewis Hamilton,3.0,0.352,350.0
+Mexico City Grand Prix,Esteban Ocon,11.0,1.251,346.0
+Mexico City Grand Prix,Gabriel Bortoleto,16.0,1.826,345.0
+Mexico City Grand Prix,Yuki Tsunoda,10.0,1.23,349.0
+Mexico City Grand Prix,Alexander Albon,17.0,1.904,350.0
+Mexico City Grand Prix,Isack Hadjar,8.0,0.666,345.0
+Mexico City Grand Prix,Lance Stroll,19.0,2.02,348.0
+Mexico City Grand Prix,Pierre Gasly,18.0,1.96,348.0
+Mexico City Grand Prix,Franco Colapinto,20.0,2.084,350.0
+Mexico City Grand Prix,Carlos Sainz,12.0,0.586,352.0
+Mexico City Grand Prix,Fernando Alonso,14.0,1.517,351.0
+Mexico City Grand Prix,Nico Hulkenberg,13.0,1.43,345.0
+Mexico City Grand Prix,Liam Lawson,15.0,1.375,343.0
+São Paulo Grand Prix,Lando Norris,1.0,0.0,338.0
+São Paulo Grand Prix,Kimi Antonelli,2.0,0.174,336.0
+São Paulo Grand Prix,Max Verstappen,19.0,0.892,338.0
+São Paulo Grand Prix,George Russell,6.0,0.369,336.0
+São Paulo Grand Prix,Oscar Piastri,4.0,0.324,338.0
+São Paulo Grand Prix,Oliver Bearman,8.0,0.244,334.0
+São Paulo Grand Prix,Liam Lawson,7.0,0.439,335.0
+São Paulo Grand Prix,Isack Hadjar,5.0,0.42,336.0
+São Paulo Grand Prix,Nico Hulkenberg,10.0,0.474,336.0
+São Paulo Grand Prix,Pierre Gasly,9.0,0.346,336.0
+São Paulo Grand Prix,Alexander Albon,12.0,0.542,337.0
+São Paulo Grand Prix,Esteban Ocon,20.0,0.927,330.0
+São Paulo Grand Prix,Carlos Sainz,15.0,0.673,333.0
+São Paulo Grand Prix,Fernando Alonso,11.0,0.49,335.0
+São Paulo Grand Prix,Franco Colapinto,16.0,1.121,338.0
+São Paulo Grand Prix,Lance Stroll,14.0,0.53,335.0
+São Paulo Grand Prix,Yuki Tsunoda,17.0,1.2,338.0
+São Paulo Grand Prix,Lewis Hamilton,13.0,0.505,338.0
+São Paulo Grand Prix,Charles Leclerc,3.0,0.29,336.0
+São Paulo Grand Prix,Gabriel Bortoleto,18.0,,
+Las Vegas Grand Prix,Max Verstappen,2.0,0.323,258.0
+Las Vegas Grand Prix,George Russell,4.0,0.869,285.0
+Las Vegas Grand Prix,Kimi Antonelli,17.0,8.38,249.0
+Las Vegas Grand Prix,Charles Leclerc,9.0,1.938,303.0
+Las Vegas Grand Prix,Carlos Sainz,3.0,0.362,261.0
+Las Vegas Grand Prix,Isack Hadjar,8.0,1.62,267.0
+Las Vegas Grand Prix,Nico Hulkenberg,11.0,4.847,238.0
+Las Vegas Grand Prix,Lewis Hamilton,19.0,9.181,225.0
+Las Vegas Grand Prix,Esteban Ocon,13.0,5.053,248.0
+Las Vegas Grand Prix,Oliver Bearman,14.0,5.16,272.0
+Las Vegas Grand Prix,Fernando Alonso,7.0,1.532,243.0
+Las Vegas Grand Prix,Yuki Tsunoda,20.0,8.864,219.0
+Las Vegas Grand Prix,Pierre Gasly,10.0,3.606,254.0
+Las Vegas Grand Prix,Liam Lawson,6.0,1.128,267.0
+Las Vegas Grand Prix,Franco Colapinto,15.0,5.749,237.0
+Las Vegas Grand Prix,Alexander Albon,16.0,8.286,234.0
+Las Vegas Grand Prix,Gabriel Bortoleto,18.0,8.74,242.0
+Las Vegas Grand Prix,Lance Stroll,12.0,4.916,256.0
+Las Vegas Grand Prix,Lando Norris,1.0,0.0,271.0
+Las Vegas Grand Prix,Oscar Piastri,5.0,1.027,274.0
+Qatar Grand Prix,Max Verstappen,3.0,0.264,327.0
+Qatar Grand Prix,Oscar Piastri,1.0,0.0,325.0
+Qatar Grand Prix,Carlos Sainz,7.0,0.864,326.0
+Qatar Grand Prix,Lando Norris,2.0,0.108,324.0
+Qatar Grand Prix,Kimi Antonelli,5.0,0.459,328.0
+Qatar Grand Prix,George Russell,4.0,0.275,327.0
+Qatar Grand Prix,Fernando Alonso,8.0,0.832,328.0
+Qatar Grand Prix,Charles Leclerc,10.0,0.956,324.0
+Qatar Grand Prix,Liam Lawson,12.0,1.046,323.0
+Qatar Grand Prix,Yuki Tsunoda,15.0,1.374,326.0
+Qatar Grand Prix,Alexander Albon,14.0,1.242,325.0
+Qatar Grand Prix,Lewis Hamilton,17.0,1.52,323.0
+Qatar Grand Prix,Gabriel Bortoleto,19.0,1.147,325.0
+Qatar Grand Prix,Franco Colapinto,20.0,1.75,326.0
+Qatar Grand Prix,Esteban Ocon,16.0,1.477,324.0
+Qatar Grand Prix,Pierre Gasly,9.0,0.937,326.0
+Qatar Grand Prix,Lance Stroll,18.0,1.671,325.0
+Qatar Grand Prix,Isack Hadjar,6.0,0.727,323.0
+Qatar Grand Prix,Oliver Bearman,13.0,1.051,324.0
+Qatar Grand Prix,Nico Hulkenberg,11.0,0.966,325.0
+Abu Dhabi Grand Prix,Max Verstappen,1.0,0.0,330.0
+Abu Dhabi Grand Prix,Oscar Piastri,3.0,0.23,327.0
+Abu Dhabi Grand Prix,Lando Norris,2.0,0.201,329.0
+Abu Dhabi Grand Prix,Charles Leclerc,5.0,0.523,332.0
+Abu Dhabi Grand Prix,George Russell,4.0,0.438,330.0
+Abu Dhabi Grand Prix,Fernando Alonso,6.0,0.654,330.0
+Abu Dhabi Grand Prix,Esteban Ocon,8.0,0.706,329.0
+Abu Dhabi Grand Prix,Lewis Hamilton,16.0,1.187,327.0
+Abu Dhabi Grand Prix,Nico Hulkenberg,18.0,1.243,330.0
+Abu Dhabi Grand Prix,Lance Stroll,15.0,0.89,327.0
+Abu Dhabi Grand Prix,Gabriel Bortoleto,7.0,0.667,329.0
+Abu Dhabi Grand Prix,Oliver Bearman,11.0,0.834,327.0
+Abu Dhabi Grand Prix,Carlos Sainz,12.0,0.835,326.0
+Abu Dhabi Grand Prix,Yuki Tsunoda,10.0,0.827,332.0
+Abu Dhabi Grand Prix,Kimi Antonelli,14.0,0.687,331.0
+Abu Dhabi Grand Prix,Alexander Albon,17.0,1.209,325.0
+Abu Dhabi Grand Prix,Isack Hadjar,9.0,0.79,329.0
+Abu Dhabi Grand Prix,Liam Lawson,13.0,0.87,329.0
+Abu Dhabi Grand Prix,Pierre Gasly,19.0,1.261,328.0
+Abu Dhabi Grand Prix,Franco Colapinto,20.0,1.683,328.0
