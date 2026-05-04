@@ -110,8 +110,3 @@ All features were tested for normality (Shapiro-Wilk) — results showed non-nor
 - **2025 locale fix:** Numbers app stored decimal odds (e.g. `1.935`) as integers (`1935`) due to Turkish locale. Automatically corrected by ÷1000.
 
 ---
-
-
-# Open the main analysis notebook
-jupyter notebook F1_EV_Analysis_Final.ipynb
-```
