@@ -5,83 +5,113 @@
 
 ##  Project Overview
 
-This project demonstrates the power of mathematical modeling in Formula 1 betting by building a machine learning system to predict race winners and podium finishers. By comparing model-derived **"Fair Value"** probabilities against market-implied probabilities from official F1 pre-race betting articles, the project identifies market inefficiencies and **Expected Value (EV)** betting opportunities.
+This project builds a machine learning system to predict F1 podium finishers and identify **Expected Value (EV)** betting opportunities. By comparing model-derived probabilities — built from qualifying telemetry — against bookmaker market odds, the project detects cases where the market systematically undervalues a driver's chances.
 
-The core hypothesis is that pre-race car telemetry data — collected from Friday Practice and Qualifying sessions — contains measurable signals that are systematically undervalued or overvalued by the betting market.
+**Core hypothesis:** Pre-race car telemetry data (grid position, qualifying time delta, top speed) contains measurable signals that the betting market fails to fully price in.
 
 ---
 
-##  Objectives
+##  Repository Structure
 
-- FastF1 telemetry data is used (qualifying lap times, top speeds, sector times) to build race outcome predictions
-- Historical betting odds are scraped and calibrated from official F1 betting articles
-- Apply **Logistic Regression** and **Random Forest** classification models trained on 2022–2024 data and tested on 2025
-- Simulate an **Expected Value (EV) betting strategy** by comparing model probabilities with market-implied probabilities
+| File | Description |
+|---|---|
+| `F1_EV_Analysis_Final.ipynb` | **Main analysis notebook** — complete pipeline from data to predictions |
+| `F1_Master_Merged_Data.csv` | Merged dataset: telemetry + odds (2022–2024, 1340 rows) |
+| `F1_2025_Grid_Quali_Speed_Data.csv` | 2025 qualifying telemetry from FastF1 |
+| `F1_2025_Sezonu_Tahmin_Template.numbers` | 2025 bookmaker odds (manually collected) |
+| `odds_scraper.py` | Selenium scraper for F1 betting articles |
+| `telemetry_extractor.py` | FastF1 data extraction script |
+| `data_fixer.py` | Data cleaning and validation script |
+| `DSA_210 Project Proposal.pdf` | Original project proposal |
 
 ---
 
 ##  Data Sources
 
-### 1. Probabilistic (Betting Odds) Data
+### 1. Betting Odds
 - **Source:** Official Formula 1 Betting Articles (published before each race weekend)
-- **Method:** Web scraping with `BeautifulSoup` and `Selenium`
+- **Method:** Web scraping with `BeautifulSoup` and `Selenium` (`odds_scraper.py`)
 - **Coverage:** 2022–2025 seasons
-- **Manual Enrichment:** Missing or corrupted data points were verified and corrected by hand to ensure data integrity, eliminating scraping artifacts
+- **Manual Enrichment:** Missing or corrupted values verified and corrected by hand
 
-### 2. Car Telemetry Data
+### 2. Car Telemetry
 - **Source:** [`FastF1`](https://theoehrly.github.io/Fast-F1/) Python library
-- **Sessions used:** Friday Practice & Qualifying
-- **Key features:** Lap times, sector times, top speeds, compound used, gap to pole
+- **Sessions used:** Qualifying
+- **Key features:** Grid position, gap to pole (seconds), speed trap top speed (km/h)
 - **Coverage:** 2022–2025 seasons
 
 ---
 
 ##  Methodology
 
-### Probability Calibration (Overround Removal)
-Raw betting odds contain a built-in bookmaker margin (overround). To extract true market-implied probabilities, the **Power Method** is applied:
+### Probability Calibration — Power Method
+Raw bookmaker odds contain a built-in margin (overround). To extract fair-value probabilities:
 
-1. **Convert odds to raw probabilities:**  
-   $P_{raw} = \dfrac{1}{\text{Decimal Odds}}$
-
-2. **Calculate overround:**  
-   $\text{Overround} = \sum P_{raw}$ (typically 1.05–1.15 per race)
-
-3. **Power scaling — solve for exponent $k$:**  
-   $\sum \left(P_{raw}\right)^k = 1$
-
-This yields calibrated "True Probabilities" for each driver per race.
+$$P_{raw} = \frac{1}{\text{Decimal Odds}} \qquad \text{Find } k: \sum (P_{raw})^k = 1 \qquad P_{calibrated} = (P_{raw})^k$$
 
 ### Machine Learning Models
-| Model | Purpose |
-|---|---|
-| Logistic Regression | Baseline probabilistic classification |
-| Random Forest | Non-linear feature interaction & feature importance |
 
-- **Train set:** 2022–2024 seasons  
-- **Test set:** 2025 season  
-- **Targets:** Race Winner (binary), Top-3 Podium Finish (binary)
+| Model | Role |
+|---|---|
+| Logistic Regression | Baseline — linear, interpretable |
+| Random Forest | Non-linear — feature interactions, importance |
+| Ensemble | Average of LR + RF predictions |
+
+- **Train:** 2022–2023 seasons
+- **Test:** 2024 season (true out-of-sample)
+- **5-fold CV AUC:** LR 0.979 ± 0.011 · RF 0.979 ± 0.010
 
 ### Expected Value Simulation
-Model-predicted probabilities are compared against calibrated market probabilities to flag positive EV opportunities:
 
-$$EV = (P_{model} \times \text{Decimal Odds}) - 1$$
+$$\text{EV} = (P_{\text{model}} \times \text{Decimal Odds}) - 1$$
 
-A bet is flagged as a **value bet** when $EV > 0$.
+A bet is flagged as a **value bet** when EV > 0.05. Precision on the 2024 test set: **37%** vs **15% true baseline** (3 podiums per 20-driver field) — **2.5× better than random**.
 
 ---
 
 ##  Hypothesis Testing
 
-### Test 1 — Does Qualifying in the Top 3 Statistically Matter?
-> **H₀:** Qualifying in the Top 3 has no effect on win probability  
-> **Result:** Rejected — Qualifying in the Top 3 gives a statistically massive advantage in win probability  
-> **T-Statistic:** 10.06 | **P-Value:** 9.76221e-20
+All features were tested for normality (Shapiro-Wilk) — results showed non-normal distributions, so **Mann-Whitney U tests** were used throughout.
 
-### Test 2 — Does Straight-Line Speed Dictate Podium Probability?
-> **H₀:** Top speed has no effect on podium probability  
-> **Result:** Rejected — Top speed is a statistically significant indicator of podium probability  
-> **Mann-Whitney U-Statistic:** 147428.00 | **P-Value:** 1.70940e-02
+### H1 — Does Grid Position Predict Win Probability?
+> **H₀:** No difference in calibrated win probability between Top-3 qualifiers and the rest  
+> **Result:** ✅ **Rejected** — Top-3 qualifiers have 11× higher win probability  
+> **Mann-Whitney U | p = 7.96e-23**
+
+### H2 — Does Straight-Line Top Speed Predict Podium Outcome?
+> **H₀:** No difference in top speed between podium and non-podium drivers  
+> **Result:** ❌ **Failed to Reject** — The ~1 km/h difference is not statistically significant  
+> **Mann-Whitney U | p = 0.47**
+
+### H3 — Does Qualifying Time Delta Predict Podium Outcome?
+> **H₀:** No difference in time delta between podium and non-podium drivers  
+> **Result:** ✅ **Rejected** — Podium drivers are 14× closer to pole position  
+> **Mann-Whitney U | p = 1.76e-66**
 
 ---
 
+##  Key Results
+
+| Metric | Value |
+|---|---|
+| Model AUC (2024 out-of-sample) | **0.9809** |
+| PR-AUC (imbalanced metric) | **0.826** |
+| 2024 value bet precision | **37%** vs 15% baseline = **2.5× better** |
+| 2025 value bets flagged | **116** across 24 races |
+| Dominant feature (RF importance) | Grid Position (55%) |
+
+---
+
+##  Known Limitations
+
+- **Label proxy:** Actual race results were unavailable via API — podium label derived from grid position + market probability. True baseline is 15% (3/20), not label rate of ~10%.
+- **Partial circularity:** Grid Position is used in both the label definition and as a model feature, partially inflating AUC. Without Grid Position as a feature, AUC ≈ 0.87 (Quali_Time_Delta still predictive).
+- **EV threshold:** 0.05 is a design choice, not statistically derived.
+- **2025 locale fix:** Numbers app stored decimal odds (e.g. `1.935`) as integers (`1935`) due to Turkish locale. Automatically corrected by ÷1000.
+
+---
+
+
+# Open the main analysis notebook
+jupyter notebook F1_EV_Analysis_Final.ipynb
+```
