@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identifying Value Bets in F1 — DSA 210</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[data-theme="dark"]{--bg:#0a0a0a;--mid:#111;--panel:#161616;--panel2:#1c1c1c;--border:rgba(255,255,255,0.08);--muted:rgba(255,255,255,0.38);--body:rgba(255,255,255,0.72);--white:#fff;--red:#e8001d;--grid-c:rgba(255,255,255,0.06);--tog:#222}
+[data-theme="light"]{--bg:#f5f4f0;--mid:#eeede9;--panel:#fff;--panel2:#f0efe9;--border:rgba(0,0,0,0.1);--muted:rgba(0,0,0,0.42);--body:rgba(0,0,0,0.75);--white:#0a0a0a;--red:#cc0018;--grid-c:rgba(0,0,0,0.07);--tog:#ddd}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body);font-family:'IBM Plex Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;transition:background .3s,color .3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:56px;background:rgba(10,10,10,0.88);backdrop-filter:blur(14px);border-bottom:.5px solid var(--border);transition:background .3s}
+[data-theme="light"] nav{background:rgba(245,244,240,0.92)}
+.nav-logo{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--red);letter-spacing:.12em;text-transform:uppercase}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.tog{background:var(--tog);border:none;cursor:pointer;width:36px;height:20px;border-radius:10px;position:relative;transition:background .3s;flex-shrink:0}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--red);transition:transform .3s}
+[data-theme="light"] .tog::after{transform:translateX(16px)}
+header{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden}
+.hbg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(232,0,29,.06) 0%,transparent 70%);pointer-events:none}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;mask-image:linear-gradient(to bottom,transparent 0%,black 30%,black 70%,transparent 100%)}
+.hlabel{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+.hlabel::before{content:'';display:block;width:24px;height:1px;background:var(--red)}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,9rem);line-height:.92;color:var(--white);letter-spacing:.02em;margin-bottom:2rem;max-width:900px}
+h1 span{color:var(--red)}
+.hmeta{display:flex;gap:3rem;flex-wrap:wrap;border-top:.5px solid var(--border);padding-top:2rem}
+.ml{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+.mv{font-size:13px;color:var(--white);font-weight:400}
+section{padding:6rem 3rem;border-top:.5px solid var(--border)}
+section:nth-child(even){background:var(--mid)}
+.sl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--red);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem}
+h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:var(--white);line-height:1;letter-spacing:.03em;margin-bottom:2.5rem}
+h3{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;color:var(--white);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.75rem}
+p{max-width:700px;margin-bottom:1rem}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin:3rem 0}
+.sc{background:var(--panel);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:.5rem}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--white);line-height:1;letter-spacing:.02em}
+.sn em{color:var(--red);font-style:normal}
+.sd{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;line-height:1.5}
+.cw{background:var(--panel);border:.5px solid var(--border);padding:2rem;margin:2rem 0}
+.ct{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.5rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+@media(max-width:768px){.two{grid-template-columns:1fr}}
+.fbw{margin:2rem 0}
+.fr{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+.fl{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);width:150px;flex-shrink:0}
+.ft{flex:1;background:var(--panel2);height:8px;border-radius:1px;overflow:hidden}
+.ff{height:100%;border-radius:1px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.fp{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--white);width:36px;text-align:right;flex-shrink:0}
+.hgrd{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin:2.5rem 0}
+.hc{background:var(--panel);border:.5px solid var(--border);padding:1.75rem;position:relative;overflow:hidden;cursor:pointer;transition:transform .2s}
+.hc:hover{transform:translateY(-3px)}
+.hc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.hc.ok::before{background:#4ade80}
+.hc.no::before{background:var(--red)}
+.hid{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:.5rem;letter-spacing:.1em}
+.ht{font-weight:500;color:var(--white);font-size:14px;margin-bottom:.75rem}
+.hr{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-bottom:.5rem}
+.hp{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)}
+.hbr{margin-top:1rem}
+.hbl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:4px;letter-spacing:.08em;text-transform:uppercase}
+.hbrr{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.hbn{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);width:56px;flex-shrink:0}
+.hbt{flex:1;background:var(--panel2);height:6px;border-radius:1px;overflow:hidden}
+.hbf{height:100%;border-radius:1px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.hc.ok .hr{color:#4ade80}
+.hc.no .hr{color:#fb923c}
+.mr{display:grid;grid-template-columns:1fr 90px 90px 90px;gap:1rem;align-items:center;padding:1rem 0;border-bottom:.5px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:12px}
+.mr.mh{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+.mn{color:var(--white);font-size:13px}
+.mv2{text-align:right;color:var(--body)}
+.mv2.hi{color:var(--red);font-weight:500}
+.fb{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center}
+.fb select,.fb input{background:var(--panel);border:.5px solid var(--border);color:var(--body);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:.5rem .75rem;outline:none;cursor:pointer}
+.fb select:hover,.fb input:hover{border-color:var(--red)}
+.vbt{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:11px}
+.vbt th{text-align:left;padding:.6rem 1rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);font-weight:400;font-size:10px}
+.vbt td{padding:.6rem 1rem;border-bottom:.5px solid var(--border);color:var(--body);vertical-align:middle}
+.vbt tr:hover td{background:rgba(232,0,29,.04)}
+.eb{display:inline-block;padding:2px 8px;font-size:10px;border-radius:2px;font-weight:500}
+.ep{background:rgba(74,222,128,.1);color:#4ade80}
+.eh{background:rgba(232,0,29,.12);color:#f87171}
+.dc{color:var(--white);font-weight:500}
+.vc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:.75rem}
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:1px;background:var(--border);margin:2.5rem 0}
+.ps{background:var(--panel);padding:1.5rem 1rem;text-align:center;transition:background .2s}
+.ps:hover{background:var(--panel2)}
+.pn{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--red);line-height:1}
+.pm{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.5rem;line-height:1.4}
+.ll{list-style:none;margin:1.5rem 0}
+.ll li{padding:1rem 0;border-bottom:.5px solid var(--border);display:flex;gap:1rem;align-items:baseline}
+.ll li::before{content:'—';color:var(--red);flex-shrink:0;font-family:'IBM Plex Mono',monospace}
+footer{padding:3rem;border-top:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.fn{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em}
+.rev{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rev.vis{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">DSA 210 · Spring 2026</span>
+  <div class="nav-links">
+    <a href="#motivation">Motivation</a>
+    <a href="#data">Data</a>
+    <a href="#analysis">Analysis</a>
+    <a href="#findings">Findings</a>
+    <a href="#predictions">2025</a>
+    <a href="#limitations">Limitations</a>
+    <button class="tog" id="togBtn" aria-label="Toggle theme"></button>
+  </div>
+</nav>
+
+<header>
+  <div class="hbg"></div>
+  <div class="hgrid"></div>
+  <div class="hlabel">Formula 1 × Data Science</div>
+  <h1>Identifying<br><span>Value Bets</span><br>in F1</h1>
+  <div class="hmeta">
+    <div><div class="ml">Author</div><div class="mv">Hakan Osman Taşkın</div></div>
+    <div><div class="ml">Course</div><div class="mv">DSA 210 · Introduction to Data Science</div></div>
+    <div><div class="ml">Term</div><div class="mv">Spring 2025–2026</div></div>
+    <div><div class="ml">Dataset</div><div class="mv">2022–2025 · 1,340 rows</div></div>
+  </div>
+</header>
+
+<!-- STATS -->
+<section style="padding:4rem 3rem">
+  <div class="sgrid rev">
+    <div class="sc"><div class="sn" data-target="0.90" data-sfx="">0.00</div><div class="sd">AUC on 2024<br>out-of-sample test</div></div>
+    <div class="sc"><div class="sn" data-target="1.8" data-sfx="×">0×</div><div class="sd">Better than<br>random baseline</div></div>
+    <div class="sc"><div class="sn" data-target="127" data-sfx="">0</div><div class="sd">Value bets flagged<br>2025 season</div></div>
+    <div class="sc"><div class="sn" data-target="27" data-sfx="%">0%</div><div class="sd">Value bet precision<br>vs 15% baseline</div></div>
+    <div class="sc"><div class="sn" data-target="1340" data-sfx="">0</div><div class="sd">Driver-race records<br>2022–2024</div></div>
+  </div>
+</section>
+
+<!-- MOTIVATION -->
+<section id="motivation">
+  <div class="sl">01 · Motivation</div>
+  <h2>Why This<br>Project?</h2>
+  <div class="two rev">
+    <div>
+      <p>Formula 1 betting markets process enormous amounts of information before each race, yet they remain partially inefficient. Bookmakers set odds to guarantee profit through overround margins — not to reflect true probabilities.</p>
+      <p>This project tests a core hypothesis: <strong style="color:var(--white);font-weight:500">qualifying telemetry contains predictive signals the market systematically underprices.</strong> Measurable gaps between model-derived and market-implied probabilities represent exploitable Expected Value (EV) opportunities.</p>
+    </div>
+    <div style="background:var(--panel);border:.5px solid var(--border);padding:1.5rem;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:2;color:var(--body)">
+      <span style="color:var(--muted)">// Odds calibration (Power Method)</span><br>
+      P_raw = 1 / Decimal_Odds<br>
+      Find k: Σ(P_raw)^k = 1<br>
+      P_cal = (P_raw)^k<br><br>
+      <span style="color:var(--muted)">// Flag value bet when</span><br>
+      EV = P_model × Odds − 1 <span style="color:var(--red)">> 0.05</span>
+    </div>
+  </div>
+</section>
+
+<!-- DATA -->
+<section id="data">
+  <div class="sl">02 · Data</div>
+  <h2>Two Independent<br>Sources</h2>
+  <div class="two rev">
+    <div class="cw">
+      <div class="ct">Source 1 — FastF1 Telemetry API</div>
+      <p style="font-size:13px;margin-bottom:1rem">Qualifying sessions pulled for 2022–2025 via telemetry_extractor.py.</p>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--body);line-height:2.2">
+        <span style="color:var(--red)">Grid_Position</span> — starting grid (1 = pole)<br>
+        <span style="color:var(--red)">Quali_Time_Delta</span> — gap to pole (s)<br>
+        <span style="color:var(--red)">Top_Speed_ST</span> — speed trap (km/h)<br><br>
+        <span style="color:var(--muted)">Coverage: 2022 · 2023 · 2024 · 2025</span>
+      </div>
+    </div>
+    <div class="cw">
+      <div class="ct">Source 2 — F1 Betting Articles</div>
+      <p style="font-size:13px;margin-bottom:1rem">Race win and podium decimal odds scraped via Selenium + BeautifulSoup.</p>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--body);line-height:2.2">
+        <span style="color:var(--red)">race_win_odds</span> — decimal odds, race win<br>
+        <span style="color:var(--red)">podium_odds</span> — decimal odds, top-3<br><br>
+        <span style="color:var(--muted)">+ manual verification<br>Avg overround: 8–10%</span>
+      </div>
+    </div>
+  </div>
+  <div class="rev">
+    <div class="cw">
+      <div class="ct">Bookmaker Overround by Season — Race Win Market</div>
+      <div id="orChart" class="css-chart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYSIS -->
+<section id="analysis">
+  <div class="sl">03 · Analysis</div>
+  <h2>Pipeline &amp;<br>Methods</h2>
+  <div class="pipe rev">
+    <div class="ps"><div class="pn">1</div><div class="pm">Load &amp; Describe</div></div>
+    <div class="ps"><div class="pn">2</div><div class="pm">Clean Data</div></div>
+    <div class="ps"><div class="pn">3</div><div class="pm">Odds Calibration</div></div>
+    <div class="ps"><div class="pn">4</div><div class="pm">EDA</div></div>
+    <div class="ps"><div class="pn">5</div><div class="pm">Normality Checks</div></div>
+    <div class="ps"><div class="pn">6</div><div class="pm">Hypothesis Tests</div></div>
+    <div class="ps"><div class="pn">7</div><div class="pm">ML Models</div></div>
+    <div class="ps"><div class="pn">8</div><div class="pm">EV Simulation</div></div>
+    <div class="ps"><div class="pn">9</div><div class="pm">2025 Predictions</div></div>
+  </div>
+
+  <h3 style="margin-top:3rem">Hypothesis Tests — Mann-Whitney U</h3>
+  <div class="hgrd rev">
+    <div class="hc ok">
+      <div class="hid">H1 — Grid Position</div>
+      <div class="ht">Does qualifying position predict win probability?</div>
+      <div class="hr">✓ H₀ Rejected</div>
+      <div class="hp">p = 7.96 × 10⁻²³</div>
+      <div class="hbr">
+        <div class="hbl">Median calibrated win probability</div>
+        <div class="hbrr"><div class="hbn">Top-3</div><div class="hbt"><div class="hbf" style="background:#4ade80" data-w="92"></div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#4ade80;margin-left:4px">11×</span></div>
+        <div class="hbrr"><div class="hbn">Rest</div><div class="hbt"><div class="hbf" style="background:var(--muted)" data-w="8"></div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-left:4px">1×</span></div>
+      </div>
+    </div>
+    <div class="hc no">
+      <div class="hid">H2 — Top Speed</div>
+      <div class="ht">Does straight-line speed predict podium?</div>
+      <div class="hr">✗ Fail to Reject H₀</div>
+      <div class="hp">p = 0.47 — not significant</div>
+      <div class="hbr">
+        <div class="hbl">Median top speed (km/h)</div>
+        <div class="hbrr"><div class="hbn">Podium</div><div class="hbt"><div class="hbf" style="background:#fb923c" data-w="74"></div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#fb923c;margin-left:4px">321.4</span></div>
+        <div class="hbrr"><div class="hbn">No Podium</div><div class="hbt"><div class="hbf" style="background:var(--muted)" data-w="72"></div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-left:4px">320.2</span></div>
+      </div>
+    </div>
+    <div class="hc ok">
+      <div class="hid">H3 — Quali Time Delta</div>
+      <div class="ht">Does gap to pole predict podium?</div>
+      <div class="hr">✓ H₀ Rejected</div>
+      <div class="hp">p = 1.76 × 10⁻⁶⁶</div>
+      <div class="hbr">
+        <div class="hbl">Median time delta to pole (s)</div>
+        <div class="hbrr"><div class="hbn">Podium</div><div class="hbt"><div class="hbf" style="background:#4ade80" data-w="5"></div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#4ade80;margin-left:4px">0.14s</span></div>
+        <div class="hbrr"><div class="hbn">No Podium</div><div class="hbt"><div class="hbf" style="background:var(--muted)" data-w="75"></div></div><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-left:4px">1.95s</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:3rem">Random Forest Feature Importance</h3>
+  <div class="fbw rev">
+    <div class="fr"><div class="fl">Grid_Position</div><div class="ft"><div class="ff" style="background:var(--red)" data-w="55"></div></div><div class="fp">55%</div></div>
+    <div class="fr"><div class="fl">Quali_Time_Delta</div><div class="ft"><div class="ff" style="background:rgba(232,0,29,.55)" data-w="41"></div></div><div class="fp">41%</div></div>
+    <div class="fr"><div class="fl">Top_Speed_ST</div><div class="ft"><div class="ff" style="background:rgba(232,0,29,.25)" data-w="4"></div></div><div class="fp">4%</div></div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="findings">
+  <div class="sl">04 · Findings</div>
+  <h2>Model<br>Performance</h2>
+  <div class="two rev">
+    <div class="cw">
+      <div class="ct">ROC Curves — 2024 Out-of-Sample Test</div>
+      <div id="rocChart" class="svg-chart"></div>
+    </div>
+    <div class="cw">
+      <div class="ct">EV Distribution — 2024 Backtest</div>
+      <div id="evChart" class="css-chart" style="min-height:200px"></div>
+    </div>
+  </div>
+
+  <div class="rev" style="margin-top:2rem">
+    <div class="mr mh"><div>Model</div><div class="mv2">CV AUC</div><div class="mv2">Test AUC</div><div class="mv2">PR-AUC</div></div>
+    <div class="mr"><div class="mn" style="color:var(--muted)">Dummy (baseline)</div><div class="mv2">—</div><div class="mv2">0.520</div><div class="mv2">0.106</div></div>
+    <div class="mr"><div class="mn">Logistic Regression</div><div class="mv2">0.891±0.028</div><div class="mv2">0.900</div><div class="mv2">—</div></div>
+    <div class="mr"><div class="mn">Random Forest</div><div class="mv2">0.886±0.031</div><div class="mv2">0.901</div><div class="mv2">—</div></div>
+    <div class="mr" style="border-bottom:.5px solid var(--red)"><div class="mn" style="color:var(--white)">Ensemble (LR+RF)</div><div class="mv2">—</div><div class="mv2 hi">0.9031</div><div class="mv2 hi">0.4785</div></div>
+  </div>
+
+  <div class="rev" style="margin-top:2rem">
+    <div class="cw">
+      <div class="ct">Value Bet Precision vs Random Baseline</div>
+      <div id="precChart" class="css-chart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2025 -->
+<section id="predictions">
+  <div class="sl">05 · 2025 Predictions</div>
+  <h2>Live Season<br>Value Bets</h2>
+  <p>Model applied to 2025 qualifying data without retraining. Bets flagged where EV > 0.05.</p>
+  <div class="fb rev">
+    <select id="rf"><option value="">All Races</option><option value="Abu Dhabi Grand Prix">Abu Dhabi Grand Prix</option><option value="Australian Grand Prix">Australian Grand Prix</option><option value="Austrian Grand Prix">Austrian Grand Prix</option><option value="Azerbaijan Grand Prix">Azerbaijan Grand Prix</option><option value="Bahrain Grand Prix">Bahrain Grand Prix</option><option value="Belgian Grand Prix">Belgian Grand Prix</option><option value="British Grand Prix">British Grand Prix</option><option value="Canadian Grand Prix">Canadian Grand Prix</option><option value="Chinese Grand Prix">Chinese Grand Prix</option><option value="Dutch Grand Prix">Dutch Grand Prix</option><option value="Emilia Romagna Grand Prix">Emilia Romagna Grand Prix</option><option value="Hungarian Grand Prix">Hungarian Grand Prix</option><option value="Italian Grand Prix">Italian Grand Prix</option><option value="Japanese Grand Prix">Japanese Grand Prix</option><option value="Las Vegas Grand Prix">Las Vegas Grand Prix</option><option value="Mexican Grand Prix">Mexican Grand Prix</option><option value="Miami Grand Prix">Miami Grand Prix</option><option value="Monaco Grand Prix">Monaco Grand Prix</option><option value="Qatar Grand Prix">Qatar Grand Prix</option><option value="Saudi Arabian Grand Prix">Saudi Arabian Grand Prix</option><option value="Singapore Grand Prix">Singapore Grand Prix</option><option value="Spanish Grand Prix">Spanish Grand Prix</option><option value="São Paulo Grand Prix">São Paulo Grand Prix</option><option value="United States Grand Prix">United States Grand Prix</option></select>
+    <select id="ef">
+      <option value="">All EV</option>
+      <option value="h">EV > 0.20</option>
+      <option value="m">0.10 – 0.20</option>
+      <option value="l">0.05 – 0.10</option>
+    </select>
+    <input type="text" id="df" placeholder="Driver code…" style="width:140px">
+  </div>
+  <div style="overflow-x:auto" class="rev">
+    <table class="vbt" id="vbt">
+      <thead><tr><th>Race</th><th>Driver</th><th>Grid</th><th>Podium Odds</th><th>Model Prob</th><th>EV</th></tr></thead>
+      <tbody id="vbb"></tbody>
+    </table>
+    <div class="vc" id="vbc"></div>
+  </div>
+</section>
+
+<!-- LIMITATIONS -->
+<section id="limitations">
+  <div class="sl">06 · Limitations &amp; Future Work</div>
+  <h2>What Could<br>Be Better?</h2>
+  <div class="two rev">
+    <div>
+      <h3>Known Limitations</h3>
+      <ul class="ll">
+        <li>Podium label is a proxy (Grid ≤ 3 AND market prob > 35%), not actual race results. P4–20 podium finishers are missed.</li>
+        <li>Partial circularity: Grid Position in both label and features. AUC drops to ~0.87 without it.</li>
+        <li>EV threshold of 0.05 is a design choice, not statistically derived.</li>
+        <li>Odds scraper depends on page structure — any layout change requires manual fallback.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Future Extensions</h3>
+      <ul class="ll">
+        <li>Replace proxy labels with actual race results via Ergast or OpenF1 API.</li>
+        <li>Add tyre strategy, weather, and FP pace as additional features.</li>
+        <li>Derive EV threshold empirically via rolling walk-forward backtest.</li>
+        <li>Extend to head-to-head markets and constructor championship odds.</li>
+        <li>Add Platt scaling calibration layer on top of the ensemble.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="fn">DSA 210 · Introduction to Data Science · Spring 2025–2026</div>
+    <div class="fn" style="margin-top:4px">Hakan Osman Taşkın · Sabancı University</div>
+  </div>
+  <div class="fn">FastF1 · scikit-learn · Python</div>
+</footer>
+
+<script>
+// theme
+const togBtn = document.getElementById('togBtn');
+togBtn.addEventListener('click', () => {
+  const t = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', t==='dark'?'light':'dark');
+  setTimeout(refreshCharts, 60);
+});
+
+// scroll reveal + bar + counter animations
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('vis');
+    e.target.querySelectorAll('.ff[data-w],.hbf[data-w]').forEach(el => { el.style.width = el.dataset.w + '%'; });
+    e.target.querySelectorAll('.sn[data-target]').forEach(el => {
+      const tgt = parseFloat(el.dataset.target), sfx = el.dataset.sfx || '', isF = tgt < 10;
+      const dur = 1400, t0 = performance.now();
+      (function step(now) {
+        const p = Math.min((now-t0)/dur,1), e2 = 1-Math.pow(1-p,3), v = tgt*e2;
+        el.textContent = isF ? v.toFixed(2)+sfx : Math.round(v)+sfx;
+        if (p<1) requestAnimationFrame(step);
+      })(t0);
+    });
+    io.unobserve(e.target);
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rev').forEach(el => io.observe(el));
+
+// lightweight CSS/SVG charts — no library needed
+const dk = () => document.documentElement.getAttribute('data-theme')==='dark';
+const mc = (tag,attrs={},children=[]) => {
+  const el=document.createElement(tag);
+  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+  children.forEach(c=>el.appendChild(typeof c==='string'?document.createTextNode(c):c));
+  return el;
+};
+
+function drawOrChart() {
+  const el=document.getElementById('orChart'); if(!el||el.dataset.drawn) return; el.dataset.drawn=1;
+  const data=[{y:2022,v:1.092},{y:2023,v:1.084},{y:2024,v:1.078}];
+  const max=1.15, min=1.0, range=max-min;
+  el.innerHTML='';
+  el.style.cssText='display:flex;flex-direction:column;gap:10px;padding:4px 0';
+  data.forEach(d=>{
+    const pct=((d.v-min)/range*100).toFixed(1);
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:12px;font-family:IBM Plex Mono,monospace;font-size:11px';
+    row.innerHTML=`<span style="color:var(--muted);width:36px">${d.y}</span>
+      <div style="flex:1;background:var(--panel2);height:22px;position:relative">
+        <div style="width:${pct}%;height:100%;background:rgba(232,0,29,.65);transition:width .8s ease"></div>
+      </div>
+      <span style="color:var(--body);width:44px;text-align:right">${(d.v*100).toFixed(1)}%</span>`;
+    el.appendChild(row);
+  });
+  el.appendChild(Object.assign(document.createElement('div'),{style:'font-family:IBM Plex Mono,monospace;font-size:9px;color:var(--muted);margin-top:6px',textContent:'0% baseline = 1.000 (no margin)'}));
+}
+
+function drawRocChart() {
+  const el=document.getElementById('rocChart'); if(!el||el.dataset.drawn) return; el.dataset.drawn=1;
+  const W=500,H=280,PAD=44;
+  const toX=v=>PAD+v*(W-PAD-16), toY=v=>H-PAD-v*(H-PAD-16);
+  const models=[
+    {label:'Diagonal',pts:[[0,0],[1,1]],color:'rgba(255,255,255,0.15)',dash:'4,4',w:1},
+    {label:'Dummy 0.558',pts:[[0,0],[.15,.18],[.6,.61],[1,1]],color:'rgba(150,150,150,0.5)',dash:'',w:1.5},
+    {label:'LR 0.900',pts:[[0,0],[.01,.45],[.07,.88],[.3,.98],[1,1]],color:'#60a5fa',dash:'',w:2},
+    {label:'RF 0.979',pts:[[0,0],[.01,.44],[.07,.86],[.3,.975],[1,1]],color:'#f59e0b',dash:'',w:2},
+    {label:'Ensemble 0.903',pts:[[0,0],[.01,.46],[.07,.87],[.3,.977],[1,1]],color:'#e8001d',dash:'',w:2.5},
+  ];
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.setAttribute('width','100%');
+  svg.style.display='block';
+  // grid lines
+  [0,.25,.5,.75,1].forEach(v=>{
+    const y=toY(v), x=toX(v);
+    const gy=document.createElementNS(ns,'line');
+    gy.setAttribute('x1',toX(0)); gy.setAttribute('x2',toX(1)); gy.setAttribute('y1',y); gy.setAttribute('y2',y);
+    gy.setAttribute('stroke','rgba(255,255,255,0.06)'); gy.setAttribute('stroke-width','0.5');
+    svg.appendChild(gy);
+    const gx=document.createElementNS(ns,'line');
+    gx.setAttribute('x1',x); gx.setAttribute('x2',x); gx.setAttribute('y1',toY(0)); gx.setAttribute('y2',toY(1));
+    gx.setAttribute('stroke','rgba(255,255,255,0.06)'); gx.setAttribute('stroke-width','0.5');
+    svg.appendChild(gx);
+    const ty=document.createElementNS(ns,'text');
+    ty.setAttribute('x',toX(0)-6); ty.setAttribute('y',y+4); ty.setAttribute('text-anchor','end');
+    ty.setAttribute('fill','rgba(255,255,255,0.38)'); ty.setAttribute('font-size','9');
+    ty.textContent=v.toFixed(2); svg.appendChild(ty);
+    const tx=document.createElementNS(ns,'text');
+    tx.setAttribute('x',x); tx.setAttribute('y',toY(0)+14); tx.setAttribute('text-anchor','middle');
+    tx.setAttribute('fill','rgba(255,255,255,0.38)'); tx.setAttribute('font-size','9');
+    tx.textContent=v.toFixed(2); svg.appendChild(tx);
+  });
+  // lines
+  models.forEach(m=>{
+    const d='M'+m.pts.map(([x,y])=>`${toX(x).toFixed(1)},${toY(y).toFixed(1)}`).join('L');
+    const path=document.createElementNS(ns,'path');
+    path.setAttribute('d',d); path.setAttribute('fill','none');
+    path.setAttribute('stroke',m.color); path.setAttribute('stroke-width',m.w);
+    if(m.dash) path.setAttribute('stroke-dasharray',m.dash);
+    svg.appendChild(path);
+  });
+  // axis labels
+  const lx=document.createElementNS(ns,'text');
+  lx.setAttribute('x',(toX(0)+toX(1))/2); lx.setAttribute('y',H-4); lx.setAttribute('text-anchor','middle');
+  lx.setAttribute('fill','rgba(255,255,255,0.38)'); lx.setAttribute('font-size','10');
+  lx.textContent='False Positive Rate'; svg.appendChild(lx);
+  const ly=document.createElementNS(ns,'text');
+  ly.setAttribute('x',10); ly.setAttribute('y',(toY(0)+toY(1))/2);
+  ly.setAttribute('text-anchor','middle'); ly.setAttribute('fill','rgba(255,255,255,0.38)'); ly.setAttribute('font-size','10');
+  ly.setAttribute('transform',`rotate(-90,10,${(toY(0)+toY(1))/2})`);
+  ly.textContent='True Positive Rate'; svg.appendChild(ly);
+  el.appendChild(svg);
+  // legend below
+  const leg=document.createElement('div');
+  leg.style.cssText='display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:10px';
+  models.slice(1).forEach(m=>{
+    const item=document.createElement('div');
+    item.style.cssText='display:flex;align-items:center;gap:6px;font-family:IBM Plex Mono,monospace;font-size:10px;color:var(--muted)';
+    item.innerHTML=`<span style="display:inline-block;width:20px;height:2px;background:${m.color}"></span>${m.label}`;
+    leg.appendChild(item);
+  });
+  el.appendChild(leg);
+}
+
+function drawEvChart() {
+  const el=document.getElementById('evChart'); if(!el||el.dataset.drawn) return; el.dataset.drawn=1;
+  const bins=['-1.4','-1.1','-0.8','-0.6','-0.4','-0.2','0','0.05','0.1','0.2','0.4','0.7','1.0','1.5','2.0','3.0','4.5'];
+  const counts=[2,5,18,38,62,95,80,45,28,18,12,8,5,4,3,2,1];
+  const vals=bins.map(parseFloat);
+  const maxC=Math.max(...counts);
+  el.innerHTML='';
+  el.style.cssText='display:flex;align-items:flex-end;gap:2px;height:160px;padding:0 0 24px';
+  bins.forEach((b,i)=>{
+    const isVal=vals[i]>=0.05;
+    const h=Math.round((counts[i]/maxC)*140);
+    const col=document.createElement('div');
+    col.title=`EV≈${b}: ${counts[i]} obs`;
+    col.style.cssText=`flex:1;height:${h}px;background:${isVal?'rgba(232,0,29,.75)':'rgba(255,255,255,0.18)'};cursor:default;transition:opacity .15s;position:relative`;
+    col.addEventListener('mouseenter',()=>col.style.opacity='.7');
+    col.addEventListener('mouseleave',()=>col.style.opacity='1');
+    // label every 3rd
+    if(i%3===0){
+      const lbl=document.createElement('div');
+      lbl.style.cssText='position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-family:IBM Plex Mono,monospace;font-size:8px;color:var(--muted);white-space:nowrap';
+      lbl.textContent=b; col.appendChild(lbl);
+    }
+    el.appendChild(col);
+  });
+  const note=document.createElement('div');
+  note.style.cssText='font-family:IBM Plex Mono,monospace;font-size:9px;color:rgba(232,0,29,.8);margin-top:8px';
+  note.innerHTML='<span style="display:inline-block;width:10px;height:10px;background:rgba(232,0,29,.75);margin-right:6px;vertical-align:middle"></span>EV > 0.05 = value bet zone';
+  el.after(note);
+}
+
+function drawPrecChart() {
+  const el=document.getElementById('precChart'); if(!el||el.dataset.drawn) return; el.dataset.drawn=1;
+  const data=[{label:'Random Baseline',val:15,color:'rgba(255,255,255,0.2)'},{label:'Value Bet Precision (27.48%)',val:27,color:'rgba(232,0,29,.75)'}];
+  el.innerHTML='';
+  el.style.cssText='display:flex;flex-direction:column;gap:14px;padding:4px 0';
+  data.forEach(d=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:12px;font-family:IBM Plex Mono,monospace;font-size:11px';
+    row.innerHTML=`<span style="color:var(--muted);width:150px;flex-shrink:0">${d.label}</span>
+      <div style="flex:1;background:var(--panel2);height:22px;position:relative">
+        <div style="width:${(d.val/45*100).toFixed(1)}%;height:100%;background:${d.color}"></div>
+      </div>
+      <span style="color:var(--white);font-weight:500;width:36px;text-align:right">${d.val}%</span>`;
+    el.appendChild(row);
+  });
+}
+
+// draw when scrolled into view
+const chartIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const id = e.target.id;
+    if (id==='orChart') drawOrChart();
+    if (id==='rocChart') drawRocChart();
+    if (id==='evChart') drawEvChart();
+    if (id==='precChart') drawPrecChart();
+    chartIO.unobserve(e.target);
+  });
+}, { threshold: 0.1 });
+['orChart','rocChart','evChart','precChart'].forEach(id => {
+  const el = document.getElementById(id); if (el) chartIO.observe(el);
+});
+
+function refreshCharts() {} // theme toggle: CSS vars handle colors automatically
+
+
+// 2025 value bets table
+const vbData = [
+  {race:'Abu Dhabi Grand Prix',driver:'RUS',grid:4,odds:3.31,prob:0.539,ev:0.783},
+  {race:'Abu Dhabi Grand Prix',driver:'NOR',grid:2,odds:1.35,prob:0.825,ev:0.114},
+  {race:'Abu Dhabi Grand Prix',driver:'PIA',grid:3,odds:1.66,prob:0.796,ev:0.324},
+  {race:'Abu Dhabi Grand Prix',driver:'VER',grid:1,odds:1.32,prob:0.875,ev:0.16},
+  {race:'Abu Dhabi Grand Prix',driver:'LEC',grid:5,odds:4.4,prob:0.481,ev:1.116},
+  {race:'Australian Grand Prix',driver:'NOR',grid:1,odds:1.48,prob:0.879,ev:0.3},
+  {race:'Australian Grand Prix',driver:'VER',grid:3,odds:1.69,prob:0.755,ev:0.276},
+  {race:'Australian Grand Prix',driver:'RUS',grid:4,odds:4.28,prob:0.548,ev:1.347},
+  {race:'Australian Grand Prix',driver:'PIA',grid:2,odds:2.39,prob:0.83,ev:0.985},
+  {race:'Australian Grand Prix',driver:'SAI',grid:10,odds:20.93,prob:0.141,ev:1.959},
+  {race:'Austrian Grand Prix',driver:'NOR',grid:1,odds:1.41,prob:0.9,ev:0.269},
+  {race:'Austrian Grand Prix',driver:'HAM',grid:4,odds:4.94,prob:0.631,ev:2.119},
+  {race:'Austrian Grand Prix',driver:'RUS',grid:5,odds:2.21,prob:0.627,ev:0.385},
+  {race:'Austrian Grand Prix',driver:'LEC',grid:2,odds:3.66,prob:0.704,ev:1.578},
+  {race:'Azerbaijan Grand Prix',driver:'ALO',grid:11,odds:28.7,prob:0.105,ev:2.01},
+  {race:'Azerbaijan Grand Prix',driver:'ANT',grid:4,odds:11.1,prob:0.688,ev:6.634},
+  {race:'Azerbaijan Grand Prix',driver:'RUS',grid:5,odds:3.72,prob:0.615,ev:1.289},
+  {race:'Azerbaijan Grand Prix',driver:'VER',grid:1,odds:1.83,prob:0.9,ev:0.647},
+  {race:'Bahrain Grand Prix',driver:'HAD',grid:12,odds:46.0,prob:0.065,ev:2.007},
+  {race:'Bahrain Grand Prix',driver:'ANT',grid:5,odds:11.0,prob:0.628,ev:5.906},
+  {race:'Bahrain Grand Prix',driver:'TSU',grid:10,odds:26.0,prob:0.105,ev:1.717},
+  {race:'Bahrain Grand Prix',driver:'RUS',grid:3,odds:2.25,prob:0.822,ev:0.85},
+  {race:'Bahrain Grand Prix',driver:'PIA',grid:1,odds:1.22,prob:0.898,ev:0.096},
+  {race:'Bahrain Grand Prix',driver:'LEC',grid:2,odds:4.3,prob:0.813,ev:2.496},
+  {race:'Belgian Grand Prix',driver:'NOR',grid:1,odds:1.27,prob:0.899,ev:0.145},
+  {race:'Belgian Grand Prix',driver:'LEC',grid:3,odds:3.64,prob:0.812,ev:1.955},
+  {race:'Belgian Grand Prix',driver:'VER',grid:4,odds:1.87,prob:0.712,ev:0.331},
+  {race:'Belgian Grand Prix',driver:'RUS',grid:6,odds:3.3,prob:0.511,ev:0.685},
+  {race:'British Grand Prix',driver:'ANT',grid:10,odds:6.45,prob:0.175,ev:0.126},
+  {race:'British Grand Prix',driver:'LEC',grid:6,odds:3.43,prob:0.568,ev:0.948},
+  {race:'British Grand Prix',driver:'RUS',grid:4,odds:2.94,prob:0.741,ev:1.179},
+  {race:'British Grand Prix',driver:'VER',grid:1,odds:1.87,prob:0.879,ev:0.643},
+  {race:'British Grand Prix',driver:'PIA',grid:2,odds:1.25,prob:0.862,ev:0.077},
+  {race:'British Grand Prix',driver:'NOR',grid:3,odds:1.3,prob:0.823,ev:0.068},
+  {race:'British Grand Prix',driver:'SAI',grid:9,odds:39.95,prob:0.186,ev:6.421},
+  {race:'British Grand Prix',driver:'HAM',grid:5,odds:4.25,prob:0.643,ev:1.732},
+  {race:'Canadian Grand Prix',driver:'RUS',grid:1,odds:4.09,prob:0.874,ev:2.577},
+  {race:'Canadian Grand Prix',driver:'ANT',grid:4,odds:5.83,prob:0.53,ev:2.087},
+  {race:'Canadian Grand Prix',driver:'HAM',grid:5,odds:3.9,prob:0.501,ev:0.953},
+  {race:'Canadian Grand Prix',driver:'VER',grid:2,odds:2.05,prob:0.844,ev:0.731},
+  {race:'Chinese Grand Prix',driver:'PIA',grid:1,odds:1.4,prob:0.875,ev:0.225},
+  {race:'Chinese Grand Prix',driver:'RUS',grid:2,odds:2.9,prob:0.817,ev:1.371},
+  {race:'Chinese Grand Prix',driver:'LEC',grid:6,odds:2.85,prob:0.488,ev:0.39},
+  {race:'Chinese Grand Prix',driver:'ALO',grid:13,odds:19.0,prob:0.056,ev:0.065},
+  {race:'Chinese Grand Prix',driver:'TSU',grid:9,odds:29.0,prob:0.172,ev:4.0},
+  {race:'Chinese Grand Prix',driver:'ANT',grid:8,odds:6.5,prob:0.238,ev:0.544},
+  {race:'Chinese Grand Prix',driver:'HAM',grid:5,odds:4.0,prob:0.574,ev:1.295},
+  {race:'Dutch Grand Prix',driver:'HAM',grid:7,odds:4.58,prob:0.273,ev:0.249},
+  {race:'Dutch Grand Prix',driver:'ALO',grid:10,odds:15.14,prob:0.126,ev:0.909},
+  {race:'Dutch Grand Prix',driver:'HAD',grid:4,odds:48.38,prob:0.531,ev:24.696},
+  {race:'Dutch Grand Prix',driver:'VER',grid:3,odds:2.37,prob:0.761,ev:0.803},
+  {race:'Dutch Grand Prix',driver:'PIA',grid:1,odds:1.21,prob:0.874,ev:0.059},
+  {race:'Dutch Grand Prix',driver:'RUS',grid:5,odds:3.13,prob:0.519,ev:0.626},
+  {race:'Dutch Grand Prix',driver:'LEC',grid:6,odds:2.79,prob:0.448,ev:0.249},
+  {race:'Emilia Romagna Grand Prix',driver:'VER',grid:2,odds:1.94,prob:0.836,ev:0.617},
+  {race:'Emilia Romagna Grand Prix',driver:'PIA',grid:1,odds:1.22,prob:0.9,ev:0.095},
+  {race:'Emilia Romagna Grand Prix',driver:'RUS',grid:3,odds:3.12,prob:0.825,ev:1.574},
+  {race:'Emilia Romagna Grand Prix',driver:'SAI',grid:6,odds:49.14,prob:0.496,ev:23.391},
+  {race:'Hungarian Grand Prix',driver:'ALO',grid:5,odds:22.55,prob:0.645,ev:13.54},
+  {race:'Hungarian Grand Prix',driver:'LEC',grid:1,odds:2.98,prob:0.755,ev:1.251},
+  {race:'Hungarian Grand Prix',driver:'RUS',grid:4,odds:3.37,prob:0.706,ev:1.381},
+  {race:'Italian Grand Prix',driver:'ALO',grid:8,odds:13.93,prob:0.183,ev:1.544},
+  {race:'Italian Grand Prix',driver:'HAD',grid:19,odds:30.7,prob:0.081,ev:1.481},
+  {race:'Italian Grand Prix',driver:'ANT',grid:6,odds:9.05,prob:0.386,ev:2.495},
+  {race:'Italian Grand Prix',driver:'RUS',grid:5,odds:2.9,prob:0.436,ev:0.265},
+  {race:'Italian Grand Prix',driver:'LEC',grid:4,odds:2.83,prob:0.468,ev:0.324},
+  {race:'Italian Grand Prix',driver:'VER',grid:1,odds:2.38,prob:0.609,ev:0.449},
+  {race:'Japanese Grand Prix',driver:'NOR',grid:2,odds:1.33,prob:0.868,ev:0.155},
+  {race:'Japanese Grand Prix',driver:'LEC',grid:4,odds:2.75,prob:0.743,ev:1.043},
+  {race:'Japanese Grand Prix',driver:'RUS',grid:5,odds:2.65,prob:0.65,ev:0.723},
+  {race:'Japanese Grand Prix',driver:'VER',grid:1,odds:1.8,prob:0.902,ev:0.624},
+  {race:'Japanese Grand Prix',driver:'SAI',grid:15,odds:36.0,prob:0.091,ev:2.282},
+  {race:'Japanese Grand Prix',driver:'LAW',grid:13,odds:36.0,prob:0.131,ev:3.72},
+  {race:'Japanese Grand Prix',driver:'ANT',grid:6,odds:10.0,prob:0.496,ev:3.964},
+  {race:'Las Vegas Grand Prix',driver:'VER',grid:2,odds:1.51,prob:0.763,ev:0.154},
+  {race:'Las Vegas Grand Prix',driver:'RUS',grid:4,odds:1.95,prob:0.684,ev:0.335},
+  {race:'Las Vegas Grand Prix',driver:'PIA',grid:5,odds:2.31,prob:0.535,ev:0.235},
+  {race:'Mexican Grand Prix',driver:'RUS',grid:4,odds:2.83,prob:0.431,ev:0.221},
+  {race:'Mexican Grand Prix',driver:'HAM',grid:3,odds:4.21,prob:0.546,ev:1.297},
+  {race:'Mexican Grand Prix',driver:'TSU',grid:10,odds:43.02,prob:0.125,ev:4.37},
+  {race:'Mexican Grand Prix',driver:'ANT',grid:6,odds:4.72,prob:0.321,ev:0.515},
+  {race:'Mexican Grand Prix',driver:'LEC',grid:2,odds:3.27,prob:0.572,ev:0.871},
+  {race:'Miami Grand Prix',driver:'RUS',grid:5,odds:2.85,prob:0.583,ev:0.662},
+  {race:'Miami Grand Prix',driver:'SAI',grid:6,odds:43.06,prob:0.485,ev:19.883},
+  {race:'Miami Grand Prix',driver:'TSU',grid:10,odds:14.17,prob:0.121,ev:0.71},
+  {race:'Miami Grand Prix',driver:'VER',grid:1,odds:2.05,prob:0.893,ev:0.83},
+  {race:'Miami Grand Prix',driver:'ANT',grid:3,odds:8.35,prob:0.735,ev:5.134},
+  {race:'Monaco Grand Prix',driver:'TSU',grid:12,odds:16.9,prob:0.072,ev:0.219},
+  {race:'Monaco Grand Prix',driver:'SAI',grid:11,odds:28.0,prob:0.083,ev:1.335},
+  {race:'Monaco Grand Prix',driver:'HAM',grid:7,odds:3.92,prob:0.398,ev:0.558},
+  {race:'Monaco Grand Prix',driver:'LEC',grid:2,odds:3.45,prob:0.886,ev:2.056},
+  {race:'Monaco Grand Prix',driver:'PIA',grid:3,odds:1.31,prob:0.838,ev:0.097},
+  {race:'Monaco Grand Prix',driver:'VER',grid:4,odds:1.81,prob:0.657,ev:0.189},
+  {race:'Monaco Grand Prix',driver:'NOR',grid:1,odds:1.38,prob:0.823,ev:0.136},
+  {race:'Qatar Grand Prix',driver:'NOR',grid:2,odds:1.45,prob:0.862,ev:0.248},
+  {race:'Qatar Grand Prix',driver:'PIA',grid:1,odds:2.06,prob:0.898,ev:0.85},
+  {race:'Qatar Grand Prix',driver:'RUS',grid:4,odds:2.64,prob:0.68,ev:0.795},
+  {race:'Qatar Grand Prix',driver:'ANT',grid:5,odds:3.6,prob:0.496,ev:0.787},
+  {race:'Saudi Arabian Grand Prix',driver:'TSU',grid:8,odds:14.38,prob:0.213,ev:2.066},
+  {race:'Saudi Arabian Grand Prix',driver:'SAI',grid:6,odds:38.1,prob:0.429,ev:15.341},
+  {race:'Saudi Arabian Grand Prix',driver:'ANT',grid:5,odds:6.76,prob:0.484,ev:2.273},
+  {race:'Saudi Arabian Grand Prix',driver:'LEC',grid:4,odds:3.59,prob:0.638,ev:1.292},
+  {race:'Saudi Arabian Grand Prix',driver:'RUS',grid:3,odds:2.59,prob:0.777,ev:1.013},
+  {race:'Saudi Arabian Grand Prix',driver:'VER',grid:1,odds:2.72,prob:0.882,ev:1.399},
+  {race:'Singapore Grand Prix',driver:'TSU',grid:13,odds:34.13,prob:0.041,ev:0.405},
+  {race:'Singapore Grand Prix',driver:'HAM',grid:6,odds:4.4,prob:0.473,ev:1.082},
+  {race:'Singapore Grand Prix',driver:'RUS',grid:1,odds:3.73,prob:0.906,ev:2.378},
+  {race:'Singapore Grand Prix',driver:'VER',grid:2,odds:1.45,prob:0.87,ev:0.262},
+  {race:'Singapore Grand Prix',driver:'PIA',grid:3,odds:1.32,prob:0.802,ev:0.059},
+  {race:'Singapore Grand Prix',driver:'ANT',grid:4,odds:8.54,prob:0.709,ev:5.051},
+  {race:'Spanish Grand Prix',driver:'HAM',grid:5,odds:4.4,prob:0.513,ev:1.259},
+  {race:'Spanish Grand Prix',driver:'RUS',grid:4,odds:3.33,prob:0.647,ev:1.153},
+  {race:'Spanish Grand Prix',driver:'NOR',grid:2,odds:1.29,prob:0.842,ev:0.083},
+  {race:'Spanish Grand Prix',driver:'PIA',grid:1,odds:1.24,prob:0.874,ev:0.081},
+  {race:'Spanish Grand Prix',driver:'ANT',grid:6,odds:6.23,prob:0.42,ev:1.62},
+  {race:'Spanish Grand Prix',driver:'VER',grid:3,odds:1.88,prob:0.783,ev:0.469},
+  {race:'São Paulo Grand Prix',driver:'LEC',grid:3,odds:3.8,prob:0.759,ev:1.882},
+  {race:'São Paulo Grand Prix',driver:'RUS',grid:6,odds:2.92,prob:0.494,ev:0.443},
+  {race:'São Paulo Grand Prix',driver:'ANT',grid:2,odds:7.18,prob:0.844,ev:5.059},
+  {race:'São Paulo Grand Prix',driver:'NOR',grid:1,odds:1.34,prob:0.882,ev:0.181},
+  {race:'United States Grand Prix',driver:'VER',grid:1,odds:1.42,prob:0.894,ev:0.268},
+  {race:'United States Grand Prix',driver:'NOR',grid:2,odds:1.5,prob:0.83,ev:0.245},
+  {race:'United States Grand Prix',driver:'LEC',grid:3,odds:3.02,prob:0.781,ev:1.358},
+  {race:'United States Grand Prix',driver:'HAM',grid:5,odds:4.14,prob:0.584,ev:1.419},
+  {race:'United States Grand Prix',driver:'RUS',grid:4,odds:2.84,prob:0.657,ev:0.866},
+  {race:'United States Grand Prix',driver:'TSU',grid:13,odds:36.18,prob:0.05,ev:0.807},
+  {race:'United States Grand Prix',driver:'ANT',grid:7,odds:6.61,prob:0.277,ev:0.829},
+];
+
+const rfEl=document.getElementById('rf');
+
+function renderTable(){
+  const race=rfEl.value, ev=document.getElementById('ef').value, drv=document.getElementById('df').value.toUpperCase();
+  let rows=vbData;
+  if(race) rows=rows.filter(r=>r.race===race);
+  if(ev==='h') rows=rows.filter(r=>r.ev>0.20);
+  if(ev==='m') rows=rows.filter(r=>r.ev>=0.10&&r.ev<=0.20);
+  if(ev==='l') rows=rows.filter(r=>r.ev>=0.05&&r.ev<0.10);
+  if(drv) rows=rows.filter(r=>r.driver.includes(drv));
+  document.getElementById('vbb').innerHTML=rows.map(r=>`<tr>
+    <td>${r.race}</td>
+    <td><span class="dc">${r.driver}</span></td>
+    <td>${r.grid}</td>
+    <td>${r.odds.toFixed(2)}</td>
+    <td>${(r.prob*100).toFixed(1)}%</td>
+    <td><span class="eb ${r.ev>0.20?'eh':'ep'}">+${r.ev.toFixed(3)}</span></td>
+  </tr>`).join('');
+  document.getElementById('vbc').textContent=`Showing ${rows.length} value bets`;
+}
+['rf','ef','df'].forEach(id=>document.getElementById(id).addEventListener('input',renderTable));
+renderTable();
+</script>
+</body>
+</html>
