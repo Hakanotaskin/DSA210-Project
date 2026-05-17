@@ -132,6 +132,6 @@ All features were tested for normality (Shapiro-Wilk) — results showed non-nor
 
 ##  Links
 
-- [Project Webpage](https://YOUR_USERNAME.github.io/YOUR_REPO)
+- [Project Webpage](https://hakanotaskin.github.io/DSA210-Project/)
 - [Final Report](DSA210_Final_Report_Hakan_Taskin.docx)
 - [AI Usage Disclosure](AI_USAGE.md)
