@@ -85,13 +85,13 @@ $$P_{raw} = \frac{1}{\text{Decimal Odds}} \qquad \text{Find } k: \sum (P_{raw})^
 
 $$\text{EV} = (P_{\text{model}} \times \text{Decimal Odds}) - 1$$
 
-A bet is flagged as a **value bet** when EV > 0.05. Drivers with podium odds above 50 are excluded from EV calculation as these represent bookmaker field odds rather than individually priced probabilities. Precision on the 2024 test set: **27.48%** vs **15% true baseline** (3 podiums per 20 driver field) — **1.8× better than random**.
+A bet is flagged as a **value bet** when EV > 0.05. Drivers with podium odds above 50 are excluded from EV calculation as these represent bookmaker field odds rather than individually priced probabilities. Precision on the 2024 test set: **27.48%** vs **15% true baseline** (3 podiums per 20 driver field) **1.8× better than random**.
 
 ---
 
 ##  Hypothesis Testing
 
-All features were tested for normality (Shapiro-Wilk) — results showed non normal distributions, so **Mann-Whitney U tests** were used throughout.
+All features were tested for normality (Shapiro-Wilk) results showed non normal distributions, so **Mann-Whitney U tests** were used throughout.
 
 ### H1 — Does Grid Position Predict Win Probability?
 > **H₀:** No difference in calibrated win probability between Top 3 qualifiers and the rest  
@@ -125,7 +125,7 @@ All features were tested for normality (Shapiro-Wilk) — results showed non nor
 ##  Known Limitations
 
 - **EV threshold:** 0.05 is a design choice, not statistically derived.
-- **Odds scraper fragility:** Scraper depends on F1 betting article page structure — layout changes require manual intervention.
+- **Odds scraper fragility:** Scraper depends on F1 betting article page structure layout changes require manual intervention.
 - **Missing 2024 rounds:** 3 rounds from the 2024 season were unavailable via the Jolpica API and were excluded from training.
 
 ---
