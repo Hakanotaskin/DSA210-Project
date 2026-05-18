@@ -1,3 +1,22 @@
+"""
+odds_scraper.py
+===============
+Scrapes race win and podium odds from official Formula 1 betting articles.
+
+For each race in the 2022-2025 seasons, the script:
+  1. Opens the corresponding F1 betting article in Chrome via Selenium
+  2. Parses the HTML to extract driver odds (fractional or decimal format)
+  3. Converts odds to implied probabilities
+  4. Saves the results to F1_Master_Odds.csv
+
+Requirements:
+  pip install selenium webdriver-manager beautifulsoup4 pandas
+
+Usage:
+  python odds_scraper.py
+  (Chrome browser will open automatically)
+"""
+
 import time
 import re
 import pandas as pd
@@ -8,15 +27,28 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 print("Starting Google Chrome via Selenium...")
+
+# ── Chrome setup ───────────────────────────────────────────────────────────────
+# Disable automation flags so F1.com does not detect and block the scraper
 chrome_options = Options()
 chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
 chrome_options.add_experimental_option('useAutomationExtension', False)
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+driver = webdriver.Chrome(
+    service=Service(ChromeDriverManager().install()),
+    options=chrome_options
+)
+
+# Spoof user agent to appear as a regular Chrome browser
 driver.execute_cdp_cmd('Network.setUserAgentOverride', {
-    "userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+    "userAgent": ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                  'AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/124.0.0.0 Safari/537.36')
 })
+
+# ── Driver name → FIA 3-letter code mapping ───────────────────────────────────
+# Both full names and last names are included to handle varied article styles
 DRIVER_NAME_MAP: dict[str, str] = {
     "max verstappen": "VER", "verstappen": "VER",
     "sergio perez": "PER", "perez": "PER", "checo perez": "PER",
@@ -31,7 +63,7 @@ DRIVER_NAME_MAP: dict[str, str] = {
     "pierre gasly": "GAS", "gasly": "GAS",
     "esteban ocon": "OCO", "ocon": "OCO",
     "valtteri bottas": "BOT", "bottas": "BOT",
-    "guanyu zhou": "ZHO", "zhou": "ZHO", 
+    "guanyu zhou": "ZHO", "zhou": "ZHO",
     "yuki tsunoda": "TSU", "tsunoda": "TSU",
     "nyck de vries": "DEV", "de vries": "DEV",
     "daniel ricciardo": "RIC", "ricciardo": "RIC",
@@ -46,16 +78,32 @@ DRIVER_NAME_MAP: dict[str, str] = {
     "franco colapinto": "COL", "colapinto": "COL",
 }
 
+
+# ── Helper: convert fractional or decimal odds to implied probability ──────────
 def fractional_to_implied_prob(text: str | None) -> float | None:
-    if not text: return None
+    """
+    Convert odds string to implied probability (%).
+    Handles:
+      - Fractional format: "7/2" → 22.22%
+      - Decimal format:    "4.5" → 22.22%
+      - Evens:             "EVS" → 50.00%
+    Returns None if the input cannot be parsed.
+    """
+    if not text:
+        return None
     upper = text.strip().upper()
-    if upper in ("EVS", "EVENS", "1/1"): return 50.0
-    
+
+    # Handle "evens" / "EVS" special case
+    if upper in ("EVS", "EVENS", "1/1"):
+        return 50.0
+
+    # Try fractional format (e.g. "7/2")
     m_frac = re.search(r"(\d+)\s*/\s*(\d+)", upper)
     if m_frac:
         num, den = int(m_frac.group(1)), int(m_frac.group(2))
         return round(den / (num + den) * 100, 4) if (num + den) else None
-        
+
+    # Try decimal format (e.g. "4.5")
     try:
         dec = float(upper)
         return round((1 / dec) * 100, 4) if dec > 0 else None
@@ -63,81 +111,124 @@ def fractional_to_implied_prob(text: str | None) -> float | None:
         return None
 
 
+# ── Helper: parse odds from one article's HTML ────────────────────────────────
 def parse_article_odds(html: str) -> list[dict]:
+    """
+    Extract driver odds from an F1 betting article HTML string.
+    Scans paragraph and list elements for driver name + odds patterns.
+    Tracks whether the current context is 'win' or 'podium' market.
+    Returns a list of dicts: {driver_code, race_win_odds, podium_odds}.
+    """
     soup = BeautifulSoup(html, "html.parser")
-    for tag in soup.find_all(["nav", "footer", "script", "style", "aside", "header"]): 
+
+    # Remove navigation, footer, and non-content elements
+    for tag in soup.find_all(["nav", "footer", "script", "style", "aside", "header"]):
         tag.decompose()
-    
+
     rows_out = []
     text_blocks = soup.find_all(['p', 'li', 'h2', 'h3', 'h4'])
-    
-    current_category = "win" 
-    seen_drivers = set()
-    
+
+    current_category = "win"   # default: race win market
+    seen_drivers = set()       # prevent duplicate entries per market
+
     for block in text_blocks:
         text = block.get_text().replace('\xa0', ' ').strip()
         text_lower = text.lower()
-        
+
+        # Detect market context switch based on section headers
         if len(text_lower) < 150:
-            if 'podium' in text_lower or 'top three' in text_lower: 
+            if 'podium' in text_lower or 'top three' in text_lower:
                 current_category = "podium"
-            elif any(kw in text_lower for kw in ['pole', 'fastest lap', 'most points', 'qualifying', 'safety car']): 
-                current_category = None
-            elif 'win' in text_lower or 'victory' in text_lower: 
+            elif any(kw in text_lower for kw in
+                     ['pole', 'fastest lap', 'most points', 'qualifying', 'safety car']):
+                current_category = None   # irrelevant market — skip
+            elif 'win' in text_lower or 'victory' in text_lower:
                 current_category = "win"
 
         if current_category is None:
             continue
-            
+
+        # Split block into chunks and look for odds patterns
         chunks = [c.strip() for c in re.split(r'•|●|\n|<br/>', text) if c.strip()]
-        
+
         for chunk in chunks:
-            if len(chunk) > 150: continue 
-                
-            match = re.search(r'\b(\d+\s*/\s*\d+|\d+\.\d+|\d+|evens|evs)[.,\s]*$', chunk.lower())
-            
+            if len(chunk) > 150:
+                continue   # too long to be a driver-odds line
+
+            # Match an odds value at the end of the chunk
+            match = re.search(
+                r'\b(\d+\s*/\s*\d+|\d+\.\d+|\d+|evens|evs)[.,\s]*$',
+                chunk.lower()
+            )
+
             if match:
                 odds_str = match.group(1)
-                
+
+                # Skip year numbers that match the pattern
                 if odds_str in ["2022", "2023", "2024", "2025"]:
                     continue
-                    
+
+                # Match driver names in the chunk
                 found_codes = set()
                 chunk_lower = chunk.lower()
                 for name_key, code in DRIVER_NAME_MAP.items():
                     if re.search(rf'\b{re.escape(name_key)}\b', chunk_lower):
                         found_codes.add(code)
-                        
+
+                # Record first occurrence per driver per market
                 for code in found_codes:
                     if (code, current_category) not in seen_drivers:
                         seen_drivers.add((code, current_category))
                         rows_out.append({
-                            "driver_code": code,
-                            "race_win_odds": odds_str if current_category == "win" else None,
-                            "podium_odds": odds_str if current_category == "podium" else None
+                            "driver_code":    code,
+                            "race_win_odds":  odds_str if current_category == "win" else None,
+                            "podium_odds":    odds_str if current_category == "podium" else None
                         })
-                        
+
     return rows_out
 
+
+# ── Helper: merge win and podium rows for the same driver ─────────────────────
 def merge_driver_rows(rows: list[dict]) -> list[dict]:
+    """
+    Combine separate win and podium entries for the same driver into one row.
+    If a driver appears twice (once per market), their odds are merged.
+    """
     merged = {}
     for row in rows:
         code = row["driver_code"]
-        if code not in merged: 
+        if code not in merged:
             merged[code] = row.copy()
         else:
-            if row.get("race_win_odds"): merged[code]["race_win_odds"] = row["race_win_odds"]
-            if row.get("podium_odds"): merged[code]["podium_odds"] = row["podium_odds"]
+            if row.get("race_win_odds"):
+                merged[code]["race_win_odds"] = row["race_win_odds"]
+            if row.get("podium_odds"):
+                merged[code]["podium_odds"] = row["podium_odds"]
     return list(merged.values())
 
+
+# ── Helper: extract race name from URL ────────────────────────────────────────
 def extract_race_name(url):
-    names = ["bahrain", "saudi", "australi", "japan", "miami", "monaco", "spain", "canad", "austria", "brit", "hungar", "belgi", "dutch", "ital", "singapore", "united-states", "mexic", "sao-paulo", "las-vegas", "qatar", "abu-dhabi", "azerbaijan", "emilia"]
+    """
+    Derive a human-readable race name from the article URL slug.
+    Used only for logging — not stored in the output CSV.
+    """
+    names = [
+        "bahrain", "saudi", "australi", "japan", "miami", "monaco",
+        "spain", "canad", "austria", "brit", "hungar", "belgi",
+        "dutch", "ital", "singapore", "united-states", "mexic",
+        "sao-paulo", "las-vegas", "qatar", "abu-dhabi", "azerbaijan", "emilia"
+    ]
     for n in names:
-        if n in url: return n.capitalize() + " Grand Prix"
+        if n in url:
+            return n.capitalize() + " Grand Prix"
     return "Grand Prix"
 
+
+# ── Article URL list by season ────────────────────────────────────────────────
+# One URL per race — official F1 betting guide articles published before each race
 if __name__ == "__main__":
-    
+
     raw_urls = {
         2022: [
             "https://www.formula1.com/en/latest/article/betting-odds-for-the-bahrain-grand-prix-whos-favourite-to-win-the-first-race.24H3iX8BNvsPuCo0vY3ZoP",
@@ -238,46 +329,52 @@ if __name__ == "__main__":
     }
 
     all_data = []
-    
+
     try:
-        print(f"Loaded {sum(len(urls) for urls in raw_urls.values())} URLs. Starting Master Scrape...")
+        total_urls = sum(len(urls) for urls in raw_urls.values())
+        print(f"Loaded {total_urls} URLs. Starting Master Scrape...")
+
         for year, urls in raw_urls.items():
             for url in urls:
                 race_name = extract_race_name(url.lower())
                 print(f"Scraping {year} {race_name}...")
-                
+
                 driver.get(url)
-                time.sleep(3.5) 
-                
+                time.sleep(3.5)  # wait for page to fully render
+
+                # Handle Cloudflare bot detection prompt
                 if "Just a moment" in driver.title:
-                    print("🚨 Cloudflare caught us! You have 15 seconds to click the human box...")
+                    print("Cloudflare detected — 15 seconds to complete the challenge...")
                     time.sleep(15)
-                
+
                 html = driver.page_source
                 raw_rows = parse_article_odds(html)
                 merged_rows = merge_driver_rows(raw_rows)
-                
+
                 if merged_rows:
                     print(f"  -> Success: {len(merged_rows)} drivers found.")
                     for r in merged_rows:
                         r.update({"year": year, "race": race_name})
+                        # Convert raw odds strings to implied probabilities
                         r["race_win_prob"] = fractional_to_implied_prob(r.get("race_win_odds"))
-                        r["podium_prob"] = fractional_to_implied_prob(r.get("podium_odds"))
+                        r["podium_prob"]   = fractional_to_implied_prob(r.get("podium_odds"))
                         all_data.append(r)
                 else:
                     print("  -> Failed: No odds matched in text.")
 
+        # Save all collected odds to CSV
         if all_data:
             df = pd.DataFrame(all_data)
-            
-            cols = ["year", "race", "driver_code", "race_win_odds", "race_win_prob", "podium_odds", "podium_prob"]
+            cols = ["year", "race", "driver_code",
+                    "race_win_odds", "race_win_prob",
+                    "podium_odds",   "podium_prob"]
             df = df[[c for c in cols if c in df.columns]]
-            
             df.to_csv("F1_Master_Odds.csv", index=False)
-            print(f"\n✅ FULL SUCCESS! Shape: {df.shape}")
+            print(f"\nFULL SUCCESS! Shape: {df.shape}")
         else:
-            print("\n❌ Shape: (0, 0) - Check the parsing logic.")
+            print("\nShape: (0, 0) — Check the parsing logic.")
 
     finally:
+        # Always close the browser, even if an error occurs
         driver.quit()
         print("Browser closed.")
