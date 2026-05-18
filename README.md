@@ -5,7 +5,7 @@
 
 ##  Project Overview
 
-This project builds a machine learning system to predict F1 podium finishers and identify **Expected Value (EV)** betting opportunities. By comparing model derived probabilities — built from qualifying telemetry against bookmaker market odds, the project detects cases where the market systematically undervalues a driver's chances.
+This project builds a machine learning system to predict F1 podium finishers and identify **Expected Value (EV)** betting opportunities. By comparing model derived probabilities built from qualifying telemetry against bookmaker market odds, the project detects cases where the market systematically undervalues a driver's chances.
 
 **Core hypothesis:** Prerace car telemetry data (grid position, qualifying time delta, top speed) contains measurable signals that the betting market fails to fully price in.
 
