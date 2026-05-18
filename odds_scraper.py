@@ -303,29 +303,9 @@ if __name__ == "__main__":
             "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-qatar-for-the.3zdQfi2enEmghiUm3ZjQeV",
             "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-to-end-their-season-on-a-high-in-abu.7v5jG3U2siKlZVzc7m3D7d"
         ],
-        2025: [
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-for-the-season-opening-australian-grand.FovJxXkSiqOtcQ72FbX3T",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-china-for-the-first.3Ka7hqJ3EA7hq71t3qO8bM",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-japan.30YNiP5d6yHcPeYGtuzOK6",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-bahrain.5pX2ddYhS5deZrZuW995lw",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-saudi-arabia.7dOVcAJcOKCvMe7vQh4Vmy",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-the-sprint-returns-in-miami.qfK2LlwGMgvoZcsvzPtjn",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-moves-on-to-imola.1h2gDR88erNsNARX48npaT",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-hits-the-streets-of-monaco.7caQmT5Fu4yGlPnNRDCTFN",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-spain.4H121O20IoSuzIdCgl86tQ",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-moves-on-to-canada.675ec1lRJmkLZBacGnvV8w",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-returns-to-europe-for-the.6rXPWNnfslibR2EJDOotCM",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-do-the-odds-favour-as-f1-arrives-at-silverstone-for-the.2ZvodOPKQW1uwum4cTbta1",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-the-sprint-returns-in-belgium.5wqu7kazFnEKgxA8oih6Fd",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-the-streets-of-baku.6Xm7Nwu3Im3PHDFBoCmNe7",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-moves-on-to-singapore.5P5grfveA0dFk4s2iftREj",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-arrives-in-austin-for-the-united.1CA762jQOPgMWtne0VbuUe",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-arrives-for-the-mexico-city-grand.4DJqIrrzzDcfG3Yom4BjxX",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-heads-to-sao-paulo.11JS0a82dZ2y05akvIevy4",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-arrives-in-las-vegas.5NxbgHd4Zna6w2bk4wTQp6",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-for-the-qatar-grand-prix.7oVyx8DQ4onHm1s1ne9a52",
-            "https://www.formula1.com/en/latest/article/betting-guide-who-are-the-favourites-as-f1-arrives-in-abu-dhabi-for-the.Ovn5gsOACFTonJoVWhwsq"
-        ]
+        # 2025 odds were collected manually and stored in F1_2025_Odds.numbers.
+        # The scraper was not used for 2025 due to changes in the F1.com article
+        # page structure that prevented reliable automated parsing.
     }
 
     all_data = []
