@@ -5,9 +5,9 @@
 
 ##  Project Overview
 
-This project builds a machine learning system to predict F1 podium finishers and identify **Expected Value (EV)** betting opportunities. By comparing model-derived probabilities — built from qualifying telemetry — against bookmaker market odds, the project detects cases where the market systematically undervalues a driver's chances.
+This project builds a machine learning system to predict F1 podium finishers and identify **Expected Value (EV)** betting opportunities. By comparing model derived probabilities — built from qualifying telemetry against bookmaker market odds, the project detects cases where the market systematically undervalues a driver's chances.
 
-**Core hypothesis:** Pre-race car telemetry data (grid position, qualifying time delta, top speed) contains measurable signals that the betting market fails to fully price in.
+**Core hypothesis:** Prerace car telemetry data (grid position, qualifying time delta, top speed) contains measurable signals that the betting market fails to fully price in.
 
 ---
 
@@ -44,7 +44,7 @@ Make sure `F1_Master_Merged_Data.csv`, `F1_2025_Grid_Quali_Speed_Data.csv`, and 
 ##  Data Sources
 
 ### 1. Race Results (Podium Labels)
-- **Source:** [Jolpica API](https://api.jolpi.ca/) (Ergast-compatible)
+- **Source:** [Jolpica API](https://api.jolpi.ca/) 
 - **Method:** Fetched via `requests` — actual finishing positions for 2022–2024
 - **Coverage:** 2022–2024 seasons (2022: 22 races, 2023: 22 races, 2024: 21 races)
 
@@ -65,7 +65,7 @@ Make sure `F1_Master_Merged_Data.csv`, `F1_2025_Grid_Quali_Speed_Data.csv`, and 
 ##  Methodology
 
 ### Probability Calibration — Power Method
-Raw bookmaker odds contain a built-in margin (overround). To extract fair-value probabilities:
+Raw bookmaker odds contain a built in margin (overround). To extract fair value probabilities:
 
 $$P_{raw} = \frac{1}{\text{Decimal Odds}} \qquad \text{Find } k: \sum (P_{raw})^k = 1 \qquad P_{calibrated} = (P_{raw})^k$$
 
@@ -78,33 +78,33 @@ $$P_{raw} = \frac{1}{\text{Decimal Odds}} \qquad \text{Find } k: \sum (P_{raw})^
 | Ensemble | Average of LR + RF predictions |
 
 - **Train:** 2022–2023 seasons
-- **Test:** 2024 season (true out-of-sample)
+- **Test:** 2024 season (true out of sample)
 - **5-fold CV AUC:** LR 0.891 ± 0.028 · RF 0.886 ± 0.031
 
 ### Expected Value Simulation
 
 $$\text{EV} = (P_{\text{model}} \times \text{Decimal Odds}) - 1$$
 
-A bet is flagged as a **value bet** when EV > 0.05. Drivers with podium odds above 50 are excluded from EV calculation as these represent bookmaker field odds rather than individually priced probabilities. Precision on the 2024 test set: **27.48%** vs **15% true baseline** (3 podiums per 20-driver field) — **1.8× better than random**.
+A bet is flagged as a **value bet** when EV > 0.05. Drivers with podium odds above 50 are excluded from EV calculation as these represent bookmaker field odds rather than individually priced probabilities. Precision on the 2024 test set: **27.48%** vs **15% true baseline** (3 podiums per 20 driver field) — **1.8× better than random**.
 
 ---
 
 ##  Hypothesis Testing
 
-All features were tested for normality (Shapiro-Wilk) — results showed non-normal distributions, so **Mann-Whitney U tests** were used throughout.
+All features were tested for normality (Shapiro-Wilk) — results showed non normal distributions, so **Mann-Whitney U tests** were used throughout.
 
 ### H1 — Does Grid Position Predict Win Probability?
-> **H₀:** No difference in calibrated win probability between Top-3 qualifiers and the rest  
+> **H₀:** No difference in calibrated win probability between Top 3 qualifiers and the rest  
 > **Result:** ✅ **Rejected** — Top-3 qualifiers have significantly higher win probability  
 > **Mann-Whitney U | p = 7.96e-23**
 
 ### H2 — Does Straight-Line Top Speed Predict Podium Outcome?
-> **H₀:** No difference in top speed between podium and non-podium drivers  
+> **H₀:** No difference in top speed between podium and non podium drivers  
 > **Result:** ❌ **Failed to Reject** — The ~1 km/h difference is not statistically significant  
 > **Mann-Whitney U | p = 0.47**
 
 ### H3 — Does Qualifying Time Delta Predict Podium Outcome?
-> **H₀:** No difference in time delta between podium and non-podium drivers  
+> **H₀:** No difference in time delta between podium and non podium drivers  
 > **Result:** ✅ **Rejected** — Podium drivers are significantly closer to pole position  
 > **Mann-Whitney U | p = 1.76e-66**
 
@@ -114,7 +114,7 @@ All features were tested for normality (Shapiro-Wilk) — results showed non-nor
 
 | Metric | Value |
 |---|---|
-| Model AUC (2024 out-of-sample) | **0.9031** |
+| Model AUC (2024 out of sample) | **0.9031** |
 | PR-AUC (imbalanced metric) | **0.4785** |
 | 2024 value bet precision | **27.48%** vs 15% baseline = **1.8× better** |
 | 2025 value bets flagged | **127** across 24 races |
