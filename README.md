@@ -45,7 +45,7 @@ Make sure `F1_Master_Merged_Data.csv`, `F1_2025_Grid_Quali_Speed_Data.csv`, and 
 
 ### 1. Race Results (Podium Labels)
 - **Source:** [Jolpica API](https://api.jolpi.ca/) 
-- **Method:** Fetched via `requests` — actual finishing positions for 2022–2024
+- **Method:** Fetched via `requests` actual finishing positions for 2022–2024
 - **Coverage:** 2022–2024 seasons (2022: 22 races, 2023: 22 races, 2024: 21 races)
 
 ### 2. Betting Odds
